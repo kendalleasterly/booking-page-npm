@@ -1,25 +1,19 @@
-import firebase from "firebase/app"
 import "firebase/auth"
 import "firebase/firestore"
 
 import React, { useState, useEffect } from 'react'
 
-import SubmitButton from "../Components/SubmitButton"
-import { useCollectionOnce, useDocumentData } from "react-firebase-hooks/firestore"
-
-
-let Context = React.createContext()
+import { useCollectionOnce } from "react-firebase-hooks/firestore"
+import { Link } from "react-router-dom"
 
 function Calendar(props) {
 
     const firestore = props.firestore
-    const auth = props.auth
 
     const classesRef = firestore.collection("classes")
-    const [classes, cloading, cerror] = useCollectionOnce(classesRef)
+    const [classes] = useCollectionOnce(classesRef)
     //if you get an error with this after making it dynamic, it's because you need to add the 0 in 01
     const currentMonth = "01"
-    const [error, setError] = useState(false)
     const [availableDays, setAvailableDays] = useState({})
     const [selectedDay, setSelectedDay] = useState(new Date().getDate())
     const daysArray = ["S", "M", "T", "W", "T", "F", "S"]
@@ -51,8 +45,6 @@ function Calendar(props) {
             });
 
             setAvailableDays(availableDaysDict)
-            let keys = Object.keys(availableDays)
-            console.log(keys)
 
         }
 
@@ -85,17 +77,17 @@ function Calendar(props) {
 
     return (
         <div className="font-bold text-xl space-y-8 mx-auto">
-            <div className="rounded-3xl bg-white grid gap-7 max-w-sm grid-cols-7 text-center text-blue-500 p-7 shadow-md">
+            <div className="rounded-3xl bg-white grid gap-7 max-w-sm grid-cols-7 text-center text-blue-500 p-7 hasShadow">
                 {daysArray.map((element, key) => <p key={key} className="text-gray-700">{element}</p>)}
 
 
                 {decideOffset().map((element, key) => <p key={key}></p>)}
 
-                {getDays(2021, 0).map((element, key) => <Day day={element} key={key}/>)}
+                {getDays(2021, 0).map((element, key) => <Day day={element} key={key} model = {props.model}/>)}
 
             </div>
 
-            <InfoCard/>
+            <InfoCard />
 
         </div>
     )
@@ -131,6 +123,9 @@ function Calendar(props) {
 
         const changeSelectedDay = function () {
 
+            props.model.selectedTime = availableDays[selectedDay]
+            console.log(props.model.selectedTime)
+
             setSelectedDay(props.day)
         }
 
@@ -149,25 +144,17 @@ function Calendar(props) {
 
     function InfoCard() {
 
-        let element = <i className = "font-normal mx-auto">Sorry, there are no classes for this day. Please select an available day.</i>
+        let element = <i className="font-normal mx-auto">Sorry, there are no classes for this day. Please select an available day.</i>
         let account = props.account
 
-        useEffect(() => {
-            
-            if(account) {
-                console.log(account)
-            }
+        // const formatDate = function () {
+        //     const year = "2021"
+        //     const month = "01"
+        //     const day = "03"
+        //     const time = "07-45"
 
-        }, [account])
-
-        const formatDate = function () {
-            const year = "2021"
-            const month = "01"
-            const day = "03"
-            const time = "07-45"
-
-            return year + "-" + month + "-" + day + "-" + time
-        }
+        //     return year + "-" + month + "-" + day + "-" + time
+        // }
 
         const formatTime = function(time) {
             let splitTime = time.split("-")
@@ -177,15 +164,16 @@ function Calendar(props) {
             return hour + ":" + minute
         }
 
-        const decideNextStep = function() {
-            if (account.freeClasses > 0) {
-                console.log(1)
-                return 1
-            } else {
-                console.log(2)
-                return 2
-            }
+        const decideNextStep = function () {
+
+            console.log(formatTime(availableDays[selectedDay]))
             
+            if (account.freeClasses > 0) {
+
+                return "/usefreeclasses"
+            } else {
+                return "/payment"
+            }
         }
 
 
@@ -196,25 +184,26 @@ function Calendar(props) {
 
             let time = availableDays[string]
 
-            element = 
-            <div className="rounded-3xl  bg-white max-w-sm text-left p-7 text-gray-900 space-y-4 shadow-md">
-                <p className="float-right text-lg font-normal text-gray-400">January {selectedDay}</p>
+            element =
+                <div className="rounded-3xl  bg-white max-w-sm text-left p-7 text-gray-900 space-y-4 hasShadow">
+                    <p className="float-right text-lg font-normal text-gray-400">January {selectedDay}</p>
 
-                <div>
-                    <p className="text-lg text-gray-400">Time</p>
-                    <p>{formatTime(time)}</p>
+                    <div>
+                        <p className="text-lg text-gray-400">Time</p>
+                        <p>{formatTime(time)}</p>
+                    </div>
+
+                    <div>
+                        <p className="text-lg text-gray-400">Teacher</p>
+                        <p className="mb-5">Jason Easterly</p>
+                    </div>
+
+                    <Link to={decideNextStep()}>
+                        <p className="font-bold rounded-3xl bg-blue-500 text-center text-white w-full py-1.5">Next</p>
+                    </Link>
+
                 </div>
 
-                <div>
-                    <p className="text-lg text-gray-400">Teacher</p>
-                    <p className="mb-5">Jason Easterly</p>
-                </div>
-
-                <button onClick = {() => {props.setStep(decideNextStep())}} className="font-bold rounded-3xl bg-blue-500 text-center text-white w-full py-1.5">Next</button>
-                {/* <SubmitButton time={formatDate()} /> */}
-
-            </div>
-            
         }
 
         //first, get the current selected day. If you can find it in the availableDays dictionary, 

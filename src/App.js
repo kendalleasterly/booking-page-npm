@@ -36,6 +36,8 @@ function App() {
     <Router >
       <link rel="stylesheet" href="https://css.gg/css" />
       {user ? <Book firestore={firestore} auth={auth} /> : <GoogleSignIn auth={auth} firebase={firebase} />}
+
+      
     </Router>
 
 

@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    .hasShadow {
+        @apply shadow-md hover:shadow-2xl transition duration-200 ease-in-out
+    }
+}
+
 .smallGridRow {
 
 max-width: 20px;

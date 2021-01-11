@@ -2,8 +2,6 @@ import firebase from "firebase/app"
 import "firebase/auth"
 import "firebase/firestore"
 
-import {useCollectionOnce, useDocumentOnce, useDocumentDataOnce, useDocumentData} from "react-firebase-hooks/firestore"
-
 import React from 'react'
 
 
@@ -39,7 +37,7 @@ const account = props.account
     return (
 
 
-            <button onClick = {createEvent} className="bg-blue-500 rounded-3xl text-white">{props.text}</button>
+            <button onClick = {createEvent}>{props.text}</button>
 
 
     )
