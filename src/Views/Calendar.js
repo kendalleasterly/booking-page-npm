@@ -50,6 +50,14 @@ function Calendar(props) {
 
     }, [classes])
 
+        useEffect(() => {
+            
+            props.model.selectedTime = availableDays[selectedDay]
+            console.log(selectedDay)
+            console.log(props.model.selectedTime)
+
+        }, [selectedDay])
+
     const getDays = function (year, month) {
         let numOfDays = new Date(year, month, 0).getDate();
         let dayArray = []
@@ -83,7 +91,7 @@ function Calendar(props) {
 
                 {decideOffset().map((element, key) => <p key={key}></p>)}
 
-                {getDays(2021, 0).map((element, key) => <Day day={element} key={key} model = {props.model}/>)}
+                {getDays(2021, 0).map((element, key) => <Day day={element} key={key} model={props.model} />)}
 
             </div>
 
@@ -109,6 +117,7 @@ function Calendar(props) {
                 } else {
                     disabled = true
                     return "text-white font-bold w-8 h-8 bg-gray-300 rounded-full"
+                    //TODO: add a feature that makes sure if a day has already passed, it is disabled.
                 }
 
             } else if (availableDaysKeys.includes(string)) {
@@ -122,11 +131,11 @@ function Calendar(props) {
         }
 
         const changeSelectedDay = function () {
-
-            props.model.selectedTime = availableDays[selectedDay]
-            console.log(props.model.selectedTime)
-
+            
+            
             setSelectedDay(props.day)
+
+
         }
 
 
@@ -156,7 +165,7 @@ function Calendar(props) {
         //     return year + "-" + month + "-" + day + "-" + time
         // }
 
-        const formatTime = function(time) {
+        const formatTime = function (time) {
             let splitTime = time.split("-")
             let hour = parseInt(splitTime[0], 10)
             let minute = splitTime[1]
@@ -166,8 +175,8 @@ function Calendar(props) {
 
         const decideNextStep = function () {
 
-            console.log(formatTime(availableDays[selectedDay]))
-            
+            // console.log(formatTime(availableDays[selectedDay]))
+
             if (account.freeClasses > 0) {
 
                 return "/usefreeclasses"

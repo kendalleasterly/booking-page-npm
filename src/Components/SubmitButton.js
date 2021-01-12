@@ -13,9 +13,7 @@ function SubmitButton(props) {
     const bookingsRef = firestore.collection("bookings")
     const accountRef = firestore.collection("users").doc(auth.currentUser.uid)
     const classRef = firestore.collection("classes").doc(props.time)
-
-    // const bookings = useCollectionOnce(bookingsRef)
-const account = props.account
+    const account = props.account
 
     const createEvent = function() {
         bookingsRef.add({
