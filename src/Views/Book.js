@@ -25,7 +25,7 @@ function Book(props) {
     const [account] = useDocumentData(accountRef)
 
     return (
-        <div className="bg-gray-50 h-screen">
+        <div className="bg-gray-50 p-4">
             <Switch>
                 <Route exact path="/">
                     <Calendar

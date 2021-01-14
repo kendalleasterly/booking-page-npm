@@ -8,7 +8,6 @@ import CheckoutForm from "../Components/CheckoutForm"
 // loadStripe is initialized with your real test publishable API key.
 const promise = loadStripe("pk_test_51I68DAF7CJHF9XyiIrrANxfLPdD7jJcTuFpdVnOzVeS5ePbc0NRaXQPCT40A0sYiCYzUula7PlyyXhcAGb24Pp2400HHOo54rE");
 
-
 export default function Payment(props) {
 
   const history = useHistory()

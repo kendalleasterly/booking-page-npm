@@ -84,8 +84,8 @@ function Calendar(props) {
 
 
     return (
-        <div className="font-bold text-xl space-y-8 mx-auto">
-            <div className="rounded-3xl bg-white grid gap-7 max-w-sm grid-cols-7 text-center text-blue-500 p-7 hasShadow">
+        <div className="font-bold text-xl space-y-8 mx-auto max-w-sm lg:max-w-md ">
+            <div className="rounded-3xl bg-white grid gap-7 grid-cols-7 text-center text-blue-500 p-7 hasShadow">
                 {daysArray.map((element, key) => <p key={key} className="text-gray-700">{element}</p>)}
 
 
@@ -156,15 +156,6 @@ function Calendar(props) {
         let element = <i className="font-normal mx-auto">Sorry, there are no classes for this day. Please select an available day.</i>
         let account = props.account
 
-        // const formatDate = function () {
-        //     const year = "2021"
-        //     const month = "01"
-        //     const day = "03"
-        //     const time = "07-45"
-
-        //     return year + "-" + month + "-" + day + "-" + time
-        // }
-
         const formatTime = function (time) {
             let splitTime = time.split("-")
             let hour = parseInt(splitTime[0], 10)
@@ -194,7 +185,7 @@ function Calendar(props) {
             let time = availableDays[string]
 
             element =
-                <div className="rounded-3xl  bg-white max-w-sm text-left p-7 text-gray-900 space-y-4 hasShadow">
+                <div className="rounded-3xl  bg-white text-left p-7 text-gray-900 space-y-4 hasShadow">
                     <p className="float-right text-lg font-normal text-gray-400">January {selectedDay}</p>
 
                     <div>

@@ -29152,6 +29152,11 @@ video {
   max-width: 20px;
 }
 
+.content {
+  margin-left: 25%;
+  margin-right: 25%;
+}
+
 .circularBackground {
   border-radius: 100%;
   color: red;
