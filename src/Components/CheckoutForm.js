@@ -4,34 +4,35 @@ import {
   useStripe,
   useElements
 } from "@stripe/react-stripe-js";
-import firebase from "firebase/app"
 import "firebase/auth"
 import "firebase/firestore"
+import { Link } from "react-router-dom"
+import {useCreateEvent } from "../Hooks/FirebaseAdd"
 
 export default function CheckoutForm(props) {
+
+  const account = props.account
+
   const [succeeded, setSucceeded] = useState(false);
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [clientSecret, setClientSecret] = useState('');
+
   const stripe = useStripe();
   const elements = useElements();
-  const auth = props.auth
-  const firestore = props.firestore
-  const bookingsRef = firestore.collection("bookings")
-  const accountRef = firestore.collection("users").doc(auth.currentUser.uid)
-  const classRef = firestore.collection("classes").doc(props.time)
-  const account = props.account
+  const createEvent = useCreateEvent(props.firestore, props.auth, account, props.model)
   
+
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
     window
-      .fetch("http://east-kickboxing-booking.herokuapp.com/create-payment-intent", {
+      .fetch("http://localhost:4000/create-payment-intent", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ items: [{ id: "xl-tshirt" }] })
+        body: JSON.stringify({ items: [{ id: "prod_IhiHTnCTklaTxS" }] })
       })
       .then(res => {
         return res.json();
@@ -40,23 +41,6 @@ export default function CheckoutForm(props) {
         setClientSecret(data.clientSecret);
       });
   }, []);
-
-  const createEvent = function () {
-    bookingsRef.add({
-      time: props.model.selectedTime,
-      userID: auth.currentUser.uid
-    })
-
-    if (account.freeClasses > 0) {
-      accountRef.update({
-        freeClasses: firebase.firestore.FieldValue.increment(-1)
-      })
-    }
-
-    classRef.update({
-      attendees: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.uid)
-    })
-  }
 
   const cardStyle = {
     style: {
@@ -97,45 +81,57 @@ export default function CheckoutForm(props) {
       setProcessing(false);
       setSucceeded(true);
 
-      createEvent()
+      createEvent(false)
 
     }
   };
 
-  const testButton = function () {
-    console.log("hey lol i worked ngl")
+  const decidePreviousStep = function () {
+    if (account) {
+      if (account.freeClasses > 0) {
+        return "/usefreeclasses"
+      } else {
+        return "/"
+      }
+    } else {
+      return "/"
+    }
+
   }
+//TODO: add a server function that resets the membership people's counts each month
 
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
-      <CardElement id="card-element" options={cardStyle} onChange={handleChange} />
-      <button
-        disabled={processing || disabled || succeeded}
-        id="submit"
-        onClick={testButton}
-      >
-        <span id="button-text">
-          {processing ? (
-            <div className="spinner" id="spinner"></div>
-          ) : ("Pay muy guy")}
-        </span>
-      </button>
-      {/* Show any error that happens when processing the payment */}
+      <div className="card space-y-5">
+
+        <Link to={decidePreviousStep()}>
+          <p className="gg-chevron-left text-blue-500"></p>
+        </Link>
+
+
+        <p className="text-xl font-bold text-center">Enter your payment details</p>
+
+        <CardElement id="card-element" options={cardStyle} onChange={handleChange} className="py-2.5" />
+
+        <button id="submit"
+          className="font-semibold rounded-3xl bg-blue-500 text-center text-white w-full py-1.5"
+          disabled={processing || disabled || succeeded} >
+
+          <span id="button-text">
+
+            {processing ? (
+              <p className="spinner" id="spinner">Loading...</p>
+            ) : ("Done")}
+          </span>
+        </button>
+
+      </div>
+
       {error && (
-        <div className="card-error" role="alert">
+        <div className="card-error text-red-400 mx-auto max-w-sm lg:max-w-md text-center mt-7" role="alert">
           {error}
         </div>
       )}
-      {/* Show a success message upon completion */}
-      <p className={succeeded ? "result-message" : "result-message hidden"}>
-        Payment succeeded, see the result in your
-        <a
-          href={`https://dashboard.stripe.com/test/payments`}
-        >
-          {" "}
-          Stripe dashboard.
-        </a> Refresh the page to pay again.
-      </p>
     </form>
   );
 }

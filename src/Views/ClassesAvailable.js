@@ -1,13 +1,12 @@
-import SubmitButton from "../Components/SubmitButton"
+import {useCreateEvent } from "../Hooks/FirebaseAdd"
 import {useHistory, Link} from "react-router-dom"
 
 function ClassesAvailable(props) {
-
-    const firestore = props.firestore
-    const auth = props.auth
+    
     const account = props.account
     const history = useHistory()
     const model = props.model
+    const createEvent = useCreateEvent(props.firestore, props.auth, account, model)
 
     const decideText = function () {
         if (account) {
@@ -23,6 +22,7 @@ function ClassesAvailable(props) {
         
 
     }
+
 /*TODO: to avoid error, you can simply put the contents of the component in a variable, and show the variable in the 
 return statement. You create a default variable value which is a regular p, and then you have an if statement right here
 that checks whther or not we have checked to see if we have available classes. if we have not, we will history.push the 
@@ -34,7 +34,7 @@ if(model.selectedTime === "") {
 
     return (
 
-        <div className="rounded-3xl bg-white hasShadow max-w-sm text-left p-7 text-gray-900 space-y-4">
+        <div className="card text-left text-gray-900 space-y-4">
             <Link to = "/">
             <p className="gg-chevron-left text-blue-500"></p>
             </Link>
@@ -50,16 +50,8 @@ if(model.selectedTime === "") {
                 </Link>
                 
                 {/* this needs to do all neccessary firebase things. It can be reused in the payment button */}
-                <Link to = "/success" className="bg-blue-500 text-white rounded-3xl py-0.5 text-center">
-                
-                <SubmitButton
-                    firestore={firestore}
-                    auth={auth}
-                    text="Yes"/>
 
-                </Link>
-                
-
+                <button onClick = {() => createEvent(true)} className="bg-blue-500 text-white rounded-3xl py-0.5 text-center">Yes</button>
                 
             </div>
         </div>

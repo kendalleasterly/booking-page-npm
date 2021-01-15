@@ -1,5 +1,5 @@
 import { loadStripe } from '@stripe/stripe-js'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../Components/CheckoutForm"
@@ -12,13 +12,12 @@ export default function Payment(props) {
 
   const history = useHistory()
   const model = props.model
+
   if (model.selectedTime === "") {
     history.push("/")
-  } 
 
-  console.log("the current model is:" + model.willUseAvailableClass)
-  console.log(model)
-
+  }
+  
 
   return (
     <div className="App">
@@ -26,8 +25,8 @@ export default function Payment(props) {
         <CheckoutForm
           firestore={props.firestore}
           auth={props.auth}
-          account = {props.account} 
-          model = {model}/>
+          account={props.account}
+          model={model} />
       </Elements>
     </div>
   );

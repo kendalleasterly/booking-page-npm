@@ -9,7 +9,8 @@ import {useState} from "react"
 class BookingModel {
 
     selectedTime = ""
-    willUseAvailableClass = false
+    // willUseAvailableClass = false
+    
     /* if you have any errors here, it's because when you defined it you used state. So whenvever you changed a value, it
     didn't update in state. you need to do setModel(model.lkdjfslk = slkdfjs) to get it working correctly. */
 
@@ -49,6 +50,10 @@ function Book(props) {
                         firestore={firestore}
                         auth={auth}
                         account={account} />
+                </Route>
+
+                <Route path="/success">
+                    <p>IT WAS A SUCCESS!!!</p>
                 </Route>
 
             </Switch>

@@ -53,8 +53,6 @@ function Calendar(props) {
         useEffect(() => {
             
             props.model.selectedTime = availableDays[selectedDay]
-            console.log(selectedDay)
-            console.log(props.model.selectedTime)
 
         }, [selectedDay])
 
@@ -84,8 +82,8 @@ function Calendar(props) {
 
 
     return (
-        <div className="font-bold text-xl space-y-8 mx-auto max-w-sm lg:max-w-md ">
-            <div className="rounded-3xl bg-white grid gap-7 grid-cols-7 text-center text-blue-500 p-7 hasShadow">
+        <div className="font-bold text-xl space-y-8 ">
+            <div className="card grid gap-7 grid-cols-7 text-center text-blue-500 ">
                 {daysArray.map((element, key) => <p key={key} className="text-gray-700">{element}</p>)}
 
 
@@ -165,9 +163,7 @@ function Calendar(props) {
         }
 
         const decideNextStep = function () {
-
-            // console.log(formatTime(availableDays[selectedDay]))
-
+            console.log(account)
             if (account.freeClasses > 0) {
 
                 return "/usefreeclasses"
@@ -185,7 +181,7 @@ function Calendar(props) {
             let time = availableDays[string]
 
             element =
-                <div className="rounded-3xl  bg-white text-left p-7 text-gray-900 space-y-4 hasShadow">
+                <div className="card text-left text-gray-900 space-y-4">
                     <p className="float-right text-lg font-normal text-gray-400">January {selectedDay}</p>
 
                     <div>

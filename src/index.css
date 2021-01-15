@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @layer base {
-    .hasShadow {
-        @apply shadow-md hover:shadow-2xl transition duration-200 ease-in-out
+    .card {
+        @apply shadow-md hover:shadow-2xl transition duration-200 ease-in-out rounded-3xl bg-white p-7 max-w-sm lg:max-w-md mx-auto
     }
 }
 
