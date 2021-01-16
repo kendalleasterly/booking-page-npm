@@ -1,5 +1,6 @@
 import {useCreateEvent } from "../Hooks/FirebaseAdd"
 import {useHistory, Link} from "react-router-dom"
+import BackButton from "../Components/BackButton"
 
 function ClassesAvailable(props) {
     
@@ -35,9 +36,8 @@ if(model.selectedTime === "") {
     return (
 
         <div className="card text-left text-gray-900 space-y-4">
-            <Link to = "/">
-            <p className="gg-chevron-left text-blue-500"></p>
-            </Link>
+            
+            <BackButton to="/" />
             
             <div className="float-center text-center font-semibold space-y-1">
                 <p className="text-l">{decideText()[0]}</p>

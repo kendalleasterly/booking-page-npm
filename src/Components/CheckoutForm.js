@@ -8,6 +8,7 @@ import "firebase/auth"
 import "firebase/firestore"
 import { Link } from "react-router-dom"
 import {useCreateEvent } from "../Hooks/FirebaseAdd"
+import BackButton from "./BackButton";
 
 export default function CheckoutForm(props) {
 
@@ -104,9 +105,7 @@ export default function CheckoutForm(props) {
     <form id="payment-form" onSubmit={handleSubmit}>
       <div className="card space-y-5">
 
-        <Link to={decidePreviousStep()}>
-          <p className="gg-chevron-left text-blue-500"></p>
-        </Link>
+        <BackButton to = {decidePreviousStep()}/>
 
 
         <p className="text-xl font-bold text-center">Enter your payment details</p>

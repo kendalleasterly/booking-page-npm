@@ -6,6 +6,18 @@ import React, { useState, useEffect } from 'react'
 import { useCollectionOnce } from "react-firebase-hooks/firestore"
 import { Link } from "react-router-dom"
 
+const getCurrentMonth = function() {
+
+    let month = new Date().getMonth() + 1
+
+    if (month < 10) {
+        return "0" + month
+    } else {
+        return `${month}`
+    }
+
+}
+
 function Calendar(props) {
 
     const firestore = props.firestore
@@ -13,7 +25,7 @@ function Calendar(props) {
     const classesRef = firestore.collection("classes")
     const [classes] = useCollectionOnce(classesRef)
     //if you get an error with this after making it dynamic, it's because you need to add the 0 in 01
-    const currentMonth = "01"
+    const currentMonth = getCurrentMonth()
     const [availableDays, setAvailableDays] = useState({})
     const [selectedDay, setSelectedDay] = useState(new Date().getDate())
     const daysArray = ["S", "M", "T", "W", "T", "F", "S"]
@@ -84,12 +96,12 @@ function Calendar(props) {
     return (
         <div className="font-bold text-xl space-y-8 ">
             <div className="card grid gap-7 grid-cols-7 text-center text-blue-500 ">
-                {daysArray.map((element, key) => <p key={key} className="text-gray-700">{element}</p>)}
+                {daysArray.map((element, key) => <p key={key} className="text-gray-700 text-center">{element}</p>)}
 
 
                 {decideOffset().map((element, key) => <p key={key}></p>)}
 
-                {getDays(2021, 0).map((element, key) => <Day day={element} key={key} model={props.model} />)}
+                {getDays(2021, new Date().getMonth()).map((element, key) => <Day day={element} key={key} model={props.model} />)}
 
             </div>
 
@@ -111,18 +123,18 @@ function Calendar(props) {
 
                 if (availableDaysKeys.includes(string)) {
                     disabled = false
-                    return "text-white font-bold w-8 h-8 bg-blue-500 rounded-full"
+                    return "text-white font-bold w-8 h-8 bg-blue-500 rounded-full text-center"
                 } else {
                     disabled = true
-                    return "text-white font-bold w-8 h-8 bg-gray-300 rounded-full"
+                    return "text-white font-bold w-8 h-8 bg-gray-300 rounded-full text-center"
                     //TODO: add a feature that makes sure if a day has already passed, it is disabled.
                 }
 
             } else if (availableDaysKeys.includes(string)) {
                 disabled = false
-                return "font-bold text-blue-500 w-8 h-8"
+                return "font-bold text-blue-500 w-8 h-8 text-center"
             } else {
-                return "font-bold text-gray-300 w-8 h-8"
+                return "font-bold text-gray-300 w-8 h-8 text-center"
 
             }
 
@@ -186,7 +198,12 @@ function Calendar(props) {
 
                     <div>
                         <p className="text-lg text-gray-400">Time</p>
-                        <p>{formatTime(time)}</p>
+                        <p>{formatTime(time)} AM</p>
+                    </div>
+
+                    <div>
+                        <p className="text-lg text-gray-400">Price</p>
+                        <p className="mb-5">$15.00</p>
                     </div>
 
                     <div>
