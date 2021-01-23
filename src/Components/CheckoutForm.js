@@ -6,8 +6,8 @@ import {
 } from "@stripe/react-stripe-js";
 import "firebase/auth"
 import "firebase/firestore"
-import { Link } from "react-router-dom"
 import {useCreateEvent } from "../Hooks/FirebaseAdd"
+import {usePaymentFunctions } from "../Hooks/PaymentModes"
 import BackButton from "./BackButton";
 
 export default function CheckoutForm(props) {
@@ -22,7 +22,9 @@ export default function CheckoutForm(props) {
 
   const stripe = useStripe();
   const elements = useElements();
-  const createEvent = useCreateEvent(props.firestore, props.auth, account, props.model)
+  const editDatabase = useCreateEvent(props.firestore, props.auth, account, props.model)
+  const [decidePreviousStep, getProductId] = usePaymentFunctions(props.model, account)
+
   
 
   useEffect(() => {
@@ -33,14 +35,14 @@ export default function CheckoutForm(props) {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ items: [{ id: "prod_IhiHTnCTklaTxS" }] })
+        body: JSON.stringify({ items: [{ id: getProductId() }] })
       })
       .then(res => {
         return res.json();
       })
       .then(data => {
         setClientSecret(data.clientSecret);
-      });
+      })
   }, []);
 
   const cardStyle = {
@@ -82,23 +84,11 @@ export default function CheckoutForm(props) {
       setProcessing(false);
       setSucceeded(true);
 
-      createEvent(false)
+      editDatabase(false)
 
     }
   };
-
-  const decidePreviousStep = function () {
-    if (account) {
-      if (account.freeClasses > 0) {
-        return "/usefreeclasses"
-      } else {
-        return "/"
-      }
-    } else {
-      return "/"
-    }
-
-  }
+  
 //TODO: add a server function that resets the membership people's counts each month
 
   return (

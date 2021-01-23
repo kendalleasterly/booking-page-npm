@@ -2,7 +2,6 @@
 import Calendar from "./Calendar"
 import ClassesAvailable from "./ClassesAvailable"
 import Payment from "./Payment"
-import { useDocumentData } from "react-firebase-hooks/firestore"
 import { Route, Switch } from "react-router-dom"
 import {useState} from "react"
 
@@ -15,20 +14,18 @@ class BookingModel {
     didn't update in state. you need to do setModel(model.lkdjfslk = slkdfjs) to get it working correctly. */
 
 }
-
+//the home page needs to exist. That's what you go to once you sign in. Then there are links. Book and Product.
 function Book(props) {
 
     const firestore = props.firestore
     const auth = props.auth
     const [model, setModel] = useState(new BookingModel())
 
-    const accountRef = firestore.collection("users").doc(auth.currentUser.uid)
-    const [account] = useDocumentData(accountRef)
-
+    const account = props.account
     return (
-        <div className="bg-gray-50 p-4">
+        <div>
             <Switch>
-                <Route exact path="/">
+                <Route exact path="/book">
                     <Calendar
                         firestore={firestore}
                         auth={auth}
@@ -36,7 +33,7 @@ function Book(props) {
                         account={account} />
                 </Route>
 
-                <Route path="/usefreeclasses">
+                <Route path="/book/usefreeclasses">
                     <ClassesAvailable
                         model = {model}
                         firestore={firestore}
@@ -44,7 +41,7 @@ function Book(props) {
                         account={account} />
                 </Route>
 
-                <Route path="/payment">
+                <Route path="/book/payment">
                     <Payment
                         model = {model}
                         firestore={firestore}
@@ -52,7 +49,7 @@ function Book(props) {
                         account={account} />
                 </Route>
 
-                <Route path="/success">
+                <Route path="/book/success">
                     <p>IT WAS A SUCCESS!!!</p>
                 </Route>
 

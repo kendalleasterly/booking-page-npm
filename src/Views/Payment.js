@@ -1,6 +1,6 @@
 import { loadStripe } from '@stripe/stripe-js'
-import React, { useEffect } from 'react'
-import { useHistory } from 'react-router-dom';
+import React, {useEffect} from 'react'
+import { useHistory, useParams } from 'react-router-dom';
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../Components/CheckoutForm"
 // Make sure to call loadStripe outside of a component’s render to avoid
@@ -12,12 +12,30 @@ export default function Payment(props) {
 
   const history = useHistory()
   const model = props.model
+  const { id } = useParams()
 
-  if (model.selectedTime === "") {
-    history.push("/")
+  useEffect(() => {
 
-  }
-  
+    if (model) {
+      //booking mode
+      if (model.selectedTime === "") {
+        history.push("/book")
+      }
+    } else {
+
+      if (
+        id !== "threepack" &&
+        id !== "forupack" &&
+        id !== "tenpack" &&
+        id !== "membership"
+      ) {
+        history.push("/products")
+      }
+
+    }
+
+  }, [history])
+
 
   return (
     <div className="App">

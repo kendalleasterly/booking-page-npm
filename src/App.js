@@ -1,16 +1,15 @@
 import GoogleSignIn from "./Components/GoogleSignIn"
-import Book from "./Views/Book"
+import Main from "./Views/Main"
 import firebase from "firebase/app"
 import "firebase/auth"
 import "firebase/firestore"
 import "tailwindcss/tailwind.css"
-import React from "react"
-import { BrowserRouter as Router } from "react-router-dom"
+import React, { useEffect } from "react"
+import { BrowserRouter as Router, useHistory } from "react-router-dom"
 
 import { useAuthState } from "react-firebase-hooks/auth"
+import { Helmet, HelmetProvider } from "react-helmet-async"
 
-
-let Context = React.createContext()
 
 if (!firebase.apps.length) {
   firebase.initializeApp({
@@ -25,20 +24,58 @@ if (!firebase.apps.length) {
 }
 
 
+
 const auth = firebase.auth()
 const firestore = firebase.firestore()
 
 function App() {
 
   const [user] = useAuthState(auth)
+  const history = useHistory()
 
+  useEffect(() => {
+
+    auth.getRedirectResult()
+      .then((result) => {
+
+        var user = result.user;
+
+        if (user) {
+          const uid = user.uid
+          const userRef = firestore.collection("users").doc(uid)
+
+          userRef.get()
+            .then((snapshot) => {
+              if (!snapshot.exists) {
+
+                userRef.set({
+                  name: user.displayName,
+                  email: user.email,
+                  freeClasses: 0,
+                  isMember: false
+                })
+              }
+            })
+        }
+      })
+  }, [user])
+
+  //you have two different routes that you can control. what needs to happen is that when you sign in, app.js needs to get that 
+  //and upload the user's new information.
   return (
-    <Router >
-      <link rel="stylesheet" href="https://css.gg/css" />
-      {user ? <Book firestore={firestore} auth={auth} /> : <GoogleSignIn auth={auth} firebase={firebase} />}
+    <HelmetProvider>
 
-      
-    </Router>
+      <Router className="z-50">
+        <link rel="stylesheet" href="https://css.gg/css" />
+
+        <Helmet>
+          <style>{'body { background-color: #FAFAFA;; }'}</style>
+        </Helmet>
+
+        {user ? <Main firestore={firestore} auth={auth} /> : <GoogleSignIn auth={auth} firebase={firebase} />}
+
+      </Router>
+    </HelmetProvider>
 
 
   );

@@ -6,16 +6,14 @@ import React, { useState, useEffect } from 'react'
 import { useCollectionOnce } from "react-firebase-hooks/firestore"
 import { Link } from "react-router-dom"
 
-const getCurrentMonth = function() {
-
-    let month = new Date().getMonth() + 1
+const getCurrentMonth = function () {
+    let month = new Date().getMonth()
 
     if (month < 10) {
         return "0" + month
     } else {
         return `${month}`
     }
-
 }
 
 function Calendar(props) {
@@ -48,10 +46,9 @@ function Calendar(props) {
                 const time = timeArray[3] + "-" + timeArray[4]
                 const attendeeCount = element.data().attendees.length
 
+                if (month === currentMonth && attendeeCount <= 8) {
 
-                if (month === currentMonth && attendeeCount < 9) {
-
-                    availableDaysDict[day] = time
+                    availableDaysDict[day] = id
 
                 }
             });
@@ -62,11 +59,11 @@ function Calendar(props) {
 
     }, [classes])
 
-        useEffect(() => {
-            
-            props.model.selectedTime = availableDays[selectedDay]
+    useEffect(() => {
 
-        }, [selectedDay])
+        props.model.selectedTime = availableDays[selectedDay]
+
+    }, [selectedDay])
 
     const getDays = function (year, month) {
         let numOfDays = new Date(year, month, 0).getDate();
@@ -80,8 +77,10 @@ function Calendar(props) {
     };
 
     const decideOffset = function () {
-        let d = new Date(2021, 0, 1)
-        let offset = d.getDay()
+        const now = new Date()
+        let d = new Date(now.getFullYear(), now.getMonth(), 1)
+        let offset = new Date().getDay() - 1
+
 
         let offsetArray = []
         let i
@@ -141,8 +140,8 @@ function Calendar(props) {
         }
 
         const changeSelectedDay = function () {
-            
-            
+
+
             setSelectedDay(props.day)
 
 
@@ -167,9 +166,13 @@ function Calendar(props) {
         let account = props.account
 
         const formatTime = function (time) {
-            let splitTime = time.split("-")
-            let hour = parseInt(splitTime[0], 10)
-            let minute = splitTime[1]
+            //note: time is in the format of the firebase doucment ID
+
+            const timeArray = time.split("-")
+            const plainHour = timeArray[3] 
+            const minute = timeArray[4]
+
+            const hour = Number(plainHour).toString()
 
             return hour + ":" + minute
         }
@@ -178,9 +181,9 @@ function Calendar(props) {
             console.log(account)
             if (account.freeClasses > 0) {
 
-                return "/usefreeclasses"
+                return "/book/usefreeclasses"
             } else {
-                return "/payment"
+                return "/book/payment"
             }
         }
 
