@@ -17,7 +17,7 @@ function Products(props) {
             title: "4 Pack",
             price: 5000,
             description: "With this four pack of kickboxing classes, you'll become stronger times four!",
-            id: "forupack"
+            id: "fourpack"
         },
         {
             title: "10 Pack",
@@ -42,12 +42,17 @@ function Products(props) {
                 </div>
             </Route>
 
+            <Route path="/products/success">
+                <p>IT was a success!</p>
+            </Route>
+
             <Route path="/products/:id">
                 <Payment
                     firestore={props.firestore}
                     account={account}
                     auth={props.auth} />
             </Route>
+            
         </Switch>
 
 

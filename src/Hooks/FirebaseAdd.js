@@ -1,41 +1,40 @@
 import firebase from "firebase/app"
 import { useHistory, useParams } from "react-router-dom"
 
-export function useCreateEvent(firestore, auth, account, model) {
+export function useCreateEvent(firestore, auth, account, selectedTime) {
 
     const history = useHistory()
     const { id } = useParams()
 
-    if (model) {
+    if (selectedTime) {
 
         function callback(willUseFreeClasses) {
 
             const bookingsRef = firestore.collection("bookings")
             const accountRef = firestore.collection("users").doc(auth.currentUser.uid)
-            const classRef = firestore.collection("classes").doc(model.selectedTime)
+            const classRef = firestore.collection("classes").doc(selectedTime)
 
-
-            if (firestore && auth && account && model) {
+            if (firestore && auth && account && selectedTime && account.freeClasses >= 0) {
                 bookingsRef.add({
-                    time: model.selectedTime,
+                    time: selectedTime,
                     userID: auth.currentUser.uid
                 })
 
-                if (account.freeClasses > 0) {
+                if (willUseFreeClasses && !account.isMember) {
                     accountRef.update({
                         freeClasses: firebase.firestore.FieldValue.increment(-1)
                     })
                 }
 
-                if (willUseFreeClasses) {
-                    classRef.update({
-                        attendees: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.uid)
-                    })
-                }
-
+                classRef.update({
+                    attendees: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.uid)
+                })
 
                 history.push("/book/success")
 
+            } else {
+                console.log("error in get db add")
+                history.push("/error")
             }
         }
 
@@ -53,16 +52,12 @@ export function useCreateEvent(firestore, auth, account, model) {
                     incrementValue = 3
                     break
 
-                case "forupack":
+                case "fourpack":
                     incrementValue = 4
                     break
 
                 case "tenpack":
                     incrementValue = 10
-                    break
-
-                case "membership":
-                    incrementValue = 9999
                     break
 
                 default:

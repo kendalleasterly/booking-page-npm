@@ -1,3 +1,5 @@
+//NOTE: THIS CODE IS LIKELY NOT IN USE AND THEREFOR DEPRECATED. ONLY REASON I DIDN'T DELETE WAS CAUSE I'M LAZY
+
 import firebase from "firebase/app"
 import "firebase/auth"
 import "firebase/firestore"
@@ -21,7 +23,7 @@ function SubmitButton(props) {
             userID: auth.currentUser.uid
         })
 
-        if (account.freeClasses > 0) {
+        if (account.freeClasses > 0 || account.isMember) {
             accountRef.update({
                 freeClasses: firebase.firestore.FieldValue.increment(-1)
             })

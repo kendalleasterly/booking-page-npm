@@ -9,10 +9,12 @@ import "firebase/firestore"
 import {useCreateEvent } from "../Hooks/FirebaseAdd"
 import {usePaymentFunctions } from "../Hooks/PaymentModes"
 import BackButton from "./BackButton";
+import {useHistory} from "react-router-dom"
 
 export default function CheckoutForm(props) {
 
   const account = props.account
+  const history = useHistory()
 
   const [succeeded, setSucceeded] = useState(false);
   const [error, setError] = useState(null);
@@ -22,15 +24,15 @@ export default function CheckoutForm(props) {
 
   const stripe = useStripe();
   const elements = useElements();
-  const editDatabase = useCreateEvent(props.firestore, props.auth, account, props.model)
-  const [decidePreviousStep, getProductId] = usePaymentFunctions(props.model, account)
+  const editDatabase = useCreateEvent(props.firestore, props.auth, account, props.selectedTime)
+  const [decidePreviousStep, getProductId] = usePaymentFunctions(props.selectedTime, account)
 
   
 
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
     window
-      .fetch("http://localhost:4000/create-payment-intent", {
+      .fetch("https://east-kickboxing-booking.herokuapp.com/create-payment-intent", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -79,6 +81,8 @@ export default function CheckoutForm(props) {
     if (payload.error) {
       setError(`Payment failed ${payload.error.message}`);
       setProcessing(false);
+
+      history.pushState("/error")
     } else {
       setError(null);
       setProcessing(false);

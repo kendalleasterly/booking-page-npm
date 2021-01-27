@@ -19,6 +19,7 @@ const getCurrentMonth = function () {
 function Calendar(props) {
 
     const firestore = props.firestore
+    const setSelectedTime = props.setSelectedTime
 
     const classesRef = firestore.collection("classes")
     const [classes] = useCollectionOnce(classesRef)
@@ -45,9 +46,10 @@ function Calendar(props) {
                 const day = parseInt(timeArray[2], 10)
                 const time = timeArray[3] + "-" + timeArray[4]
                 const attendeeCount = element.data().attendees.length
+                const currentDay = new Date().getDate()
 
-                if (month === currentMonth && attendeeCount <= 8) {
-
+                if (month === currentMonth && attendeeCount <= 8 && day >= currentDay) {
+console.log(id, "ran")
                     availableDaysDict[day] = id
 
                 }
@@ -60,10 +62,10 @@ function Calendar(props) {
     }, [classes])
 
     useEffect(() => {
+        console.log("available days are", availableDays)
+        console.log("selected day is", availableDays[selectedDay])
 
-        props.model.selectedTime = availableDays[selectedDay]
-
-    }, [selectedDay])
+    }, [availableDays])
 
     const getDays = function (year, month) {
         let numOfDays = new Date(year, month, 0).getDate();
@@ -100,7 +102,7 @@ function Calendar(props) {
 
                 {decideOffset().map((element, key) => <p key={key}></p>)}
 
-                {getDays(2021, new Date().getMonth()).map((element, key) => <Day day={element} key={key} model={props.model} />)}
+                {getDays(2021, new Date().getMonth()).map((element, key) => <Day day={element} key={key} selectedTime={props.selectedTime} />)}
 
             </div>
 
@@ -143,7 +145,8 @@ function Calendar(props) {
 
 
             setSelectedDay(props.day)
-
+            console.log("selected day from change is", availableDays[props.day])
+            setSelectedTime(availableDays[props.day])
 
         }
 
@@ -162,14 +165,14 @@ function Calendar(props) {
 
     function InfoCard() {
 
-        let element = <i className="font-normal mx-auto">Sorry, there are no classes for this day. Please select an available day.</i>
+        let element = <p className="w-full text-center font-normal text-gray-400">Sorry, there are no classes for this day. Please select an available day.</p>
         let account = props.account
 
         const formatTime = function (time) {
             //note: time is in the format of the firebase doucment ID
 
             const timeArray = time.split("-")
-            const plainHour = timeArray[3] 
+            const plainHour = timeArray[3]
             const minute = timeArray[4]
 
             const hour = Number(plainHour).toString()
@@ -179,7 +182,7 @@ function Calendar(props) {
 
         const decideNextStep = function () {
             console.log(account)
-            if (account.freeClasses > 0) {
+            if (account.freeClasses > 0 || account.isMember) {
 
                 return "/book/usefreeclasses"
             } else {

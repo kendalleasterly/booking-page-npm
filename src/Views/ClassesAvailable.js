@@ -7,8 +7,8 @@ function ClassesAvailable(props) {
     
     const account = props.account
     const history = useHistory()
-    const model = props.model
-    const createEvent = useCreateEvent(props.firestore, props.auth, account, model)
+    const selectedTime = props.selectedTime
+    const createEvent = useCreateEvent(props.firestore, props.auth, account, selectedTime)
 
     const decideText = function () {
         if (account) {
@@ -34,11 +34,11 @@ og page */
 
 useEffect(() => {
    
-    if(model.selectedTime === "") {
+    if(selectedTime === "") {
         history.push("/")
     }
 
-}, [model])
+}, [selectedTime])
 
     return (
 

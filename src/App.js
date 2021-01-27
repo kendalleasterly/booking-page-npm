@@ -57,6 +57,11 @@ function App() {
               }
             })
         }
+      }).catch((err) => {
+
+        history.push("/error")
+        console.log("error in get redirect was", err)
+        
       })
   }, [user])
 

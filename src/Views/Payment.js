@@ -1,5 +1,5 @@
 import { loadStripe } from '@stripe/stripe-js'
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../Components/CheckoutForm"
@@ -11,31 +11,27 @@ const promise = loadStripe("pk_test_51I68DAF7CJHF9XyiIrrANxfLPdD7jJcTuFpdVnOzVeS
 export default function Payment(props) {
 
   const history = useHistory()
-  const model = props.model
+  const selectedTime = props.selectedTime
   const { id } = useParams()
-
   useEffect(() => {
-
-    if (model) {
+console.log(selectedTime)
+    if (selectedTime) {
       //booking mode
-      if (model.selectedTime === "") {
+      if (selectedTime === "") {
         history.push("/book")
       }
     } else {
 
       if (
         id !== "threepack" &&
-        id !== "forupack" &&
+        id !== "fourpack" &&
         id !== "tenpack" &&
         id !== "membership"
       ) {
-        history.push("/products")
+        history.push("/")
       }
-
     }
-
   }, [history])
-
 
   return (
     <div className="App">
@@ -44,7 +40,7 @@ export default function Payment(props) {
           firestore={props.firestore}
           auth={props.auth}
           account={props.account}
-          model={model} />
+          selectedTime={selectedTime} />
       </Elements>
     </div>
   );

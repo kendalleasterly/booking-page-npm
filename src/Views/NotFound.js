@@ -13,7 +13,7 @@ function NotFound() {
 
     return (
         <div>
-            <p>We still haven't found any reason why you decided to do a 404</p>
+            <p className = "text-center font-semibold text-xl">404 error</p>
         </div>
     )
 }
