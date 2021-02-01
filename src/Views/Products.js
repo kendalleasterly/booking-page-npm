@@ -10,25 +10,25 @@ function Products(props) {
         {
             title: "3 Pack",
             price: 4000,
-            description: "With this three pack of kickboxing classes, you'll become stronger times three!",
+            description: "Save $5!",
             id: "threepack"
         },
         {
             title: "4 Pack",
             price: 5000,
-            description: "With this four pack of kickboxing classes, you'll become stronger times four!",
+            description: "Save $10!",
             id: "fourpack"
         },
         {
             title: "10 Pack",
             price: 13000,
-            description: "With this ten pack of kickboxing classes, you'll become stronger times ten!",
+            description: "Save $20!",
             id: "tenpack"
         },
         {
             title: "Membership",
             price: 18000,
-            description: "With this membership of kickboxing classes, you'll become stronger times unlimited!",
+            description: "Unlimited classes + one personal training session! (renews monthly)",
             id: "membership"
         }
     ]
@@ -43,7 +43,7 @@ function Products(props) {
             </Route>
 
             <Route path="/products/success">
-                <p>IT was a success!</p>
+            <p className="text-center font-semibold text-xl">Your Payment has gone through, and you have successfuly added credits to your account. Thank You!</p>
             </Route>
 
             <Route path="/products/:id">

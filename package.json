@@ -26,7 +26,7 @@
   "scripts": {
     "build:css": "postcss src/index.css -o src/tailwind.css",
     "start": "npm run build:css && react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && open /Users/kendalleasterly/OneDrive/Documents/Test.app",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

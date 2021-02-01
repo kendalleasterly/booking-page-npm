@@ -42,7 +42,7 @@ function Book(props) {
                 </Route>
 
                 <Route path="/book/success">
-                    <p>IT WAS A SUCCESS!!!</p>
+                <p className="text-center font-semibold text-xl">Your Payment has gone through, and you have successfuly reserved a spot with us at East Kickboxing Club. Thank You!</p>
                 </Route>
 
             </Switch>

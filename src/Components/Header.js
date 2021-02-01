@@ -85,7 +85,12 @@ function Header(props) {
             makeIntoDoubleDigits(hour) + "-" +
             makeIntoDoubleDigits(minute)
 
-        const uid = auth.currentUser.uid
+        let uid = ""
+
+        if (auth.currentUser) {
+            uid = auth.currentUser.uid
+        }
+
         let queryRef = firestore.collection("bookings")
             .where("userID", "==", uid)
             .where("time", ">=", currentID)
@@ -123,11 +128,15 @@ function Header(props) {
                 const distance = nextClassDate.getTime() - now.getTime()
                 const distanceInDays = distance / (1000 * 60 * 60 * 24)
 
-                const isToday = (nextClassDate.getFullYear() - now.getFullYear()) +
-                    (nextClassDate.getMonth() - now.getMonth()) +
+                const isToday = 100*(nextClassDate.getFullYear() - now.getFullYear()) +
+                    10*(nextClassDate.getMonth() - now.getMonth()) +
                     (nextClassDate.getDate() - now.getDate())
 
                 if (isToday === 0) {
+
+                    returnValue = "Your next class is today at " + nextClassTime
+
+                } else if(isToday === 1) {
 
                     returnValue = "Your next class is tomorrow at " + nextClassTime
 

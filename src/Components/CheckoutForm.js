@@ -40,6 +40,7 @@ export default function CheckoutForm(props) {
         body: JSON.stringify({ items: [{ id: getProductId() }] })
       })
       .then(res => {
+        console.log(res)
         return res.json();
       })
       .then(data => {

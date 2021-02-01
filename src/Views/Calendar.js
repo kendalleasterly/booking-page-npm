@@ -67,8 +67,13 @@ console.log(id, "ran")
 
     }, [availableDays])
 
-    const getDays = function (year, month) {
-        let numOfDays = new Date(year, month, 0).getDate();
+    const getDays = function () {
+
+        const currentYear = new Date().getFullYear()
+        const currentMonth = new Date().getMonth()
+
+        let numOfDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+        console.log("there are this many days", numOfDays)
         let dayArray = []
 
         let i
@@ -81,7 +86,7 @@ console.log(id, "ran")
     const decideOffset = function () {
         const now = new Date()
         let d = new Date(now.getFullYear(), now.getMonth(), 1)
-        let offset = new Date().getDay() - 1
+        let offset = d.getDay()
 
 
         let offsetArray = []
@@ -102,7 +107,7 @@ console.log(id, "ran")
 
                 {decideOffset().map((element, key) => <p key={key}></p>)}
 
-                {getDays(2021, new Date().getMonth()).map((element, key) => <Day day={element} key={key} selectedTime={props.selectedTime} />)}
+                {getDays().map((element, key) => <Day day={element} key={key} selectedTime={props.selectedTime} />)}
 
             </div>
 
@@ -123,6 +128,10 @@ console.log(id, "ran")
             if (selectedDay === props.day) {
 
                 if (availableDaysKeys.includes(string)) {
+
+                    setSelectedTime(availableDays[props.day])
+                    console.log("we've set the selected time")
+
                     disabled = false
                     return "text-white font-bold w-8 h-8 bg-blue-500 rounded-full text-center"
                 } else {
@@ -146,8 +155,7 @@ console.log(id, "ran")
 
             setSelectedDay(props.day)
             console.log("selected day from change is", availableDays[props.day])
-            setSelectedTime(availableDays[props.day])
-
+            
         }
 
 
