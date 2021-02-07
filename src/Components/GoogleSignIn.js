@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import GoogleImage from "../Images/google.svg"
 
 function GoogleSignIn(props) {
 
@@ -22,7 +23,7 @@ function GoogleSignIn(props) {
         <div className = "w-full flex flex-col justify-center items-center h-9 h-screen space-y-10">
 
             <button onClick = {signInWithGoogle} className = "max-w-xs font-bold rounded-3xl bg-blue-100 text-center text-white w-full py-1.5 inline-block align-middle flex justify-center space-x-4 px-4"> 
-            <img src="http://icons.kendalleasterly.com/blue-500/google.svg" alt=""/>
+            <img src={GoogleImage} alt=""/>
             <p className = "text-blue-500">Sign in with Google</p>
             </button>
 

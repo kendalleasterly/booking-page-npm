@@ -2,7 +2,10 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { useTransition, animated } from 'react-spring'
-import Icon from './Icon'
+import Dollar from "../Images/dollar.svg"
+import Home from "../Images/home.svg"
+import ShoppingCart from "../Images/shopping-cart.svg"
+import CalendarToday from "../Images/calendar-today.svg"
 
 function Header(props) {
 
@@ -114,51 +117,51 @@ function Header(props) {
 
                     const nextClass = bookingsArray[0].time
 
-                let nextClassParts = nextClass.split("-")
+                    let nextClassParts = nextClass.split("-")
 
-                let nextClassDate = new Date(nextClassParts[0],
-                    nextClassParts[1],
-                    nextClassParts[2],
-                    nextClassParts[3],
-                    nextClassParts[4])
-
-
-                const nextClassTime = nextClassDate.getHours() + ":" + makeIntoDoubleDigits(nextClassDate.getMinutes())
-
-                const distance = nextClassDate.getTime() - now.getTime()
-                const distanceInDays = distance / (1000 * 60 * 60 * 24)
-
-                const isToday = 100*(nextClassDate.getFullYear() - now.getFullYear()) +
-                    10*(nextClassDate.getMonth() - now.getMonth()) +
-                    (nextClassDate.getDate() - now.getDate())
-
-                if (isToday === 0) {
-
-                    returnValue = "Your next class is today at " + nextClassTime
-
-                } else if(isToday === 1) {
-
-                    returnValue = "Your next class is tomorrow at " + nextClassTime
-
-                } else if (distanceInDays < 7) {
-
-                    let day = nextClassDate.getDay()
+                    let nextClassDate = new Date(nextClassParts[0],
+                        nextClassParts[1],
+                        nextClassParts[2],
+                        nextClassParts[3],
+                        nextClassParts[4])
 
 
-                    const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+                    const nextClassTime = nextClassDate.getHours() + ":" + makeIntoDoubleDigits(nextClassDate.getMinutes())
 
-                    returnValue = "Your next class is " + weekday[day] + " at " + nextClassTime
+                    const distance = nextClassDate.getTime() - now.getTime()
+                    const distanceInDays = distance / (1000 * 60 * 60 * 24)
 
-                } else {
+                    const isToday = 100 * (nextClassDate.getFullYear() - now.getFullYear()) +
+                        10 * (nextClassDate.getMonth() - now.getMonth()) +
+                        (nextClassDate.getDate() - now.getDate())
 
-                    const nextClassDateString = nextClassDate.toLocaleDateString()
-                    const nextClassDateStringSplit = nextClassDateString.split("/")
-                    const nextClassDateStringShortened = nextClassDateStringSplit[0] + "/" + nextClassDateStringSplit[1]
+                    if (isToday === 0) {
 
-                    returnValue = "Your next class is " + nextClassDateStringShortened + " at " + nextClassTime
+                        returnValue = "Your next class is today at " + nextClassTime
+
+                    } else if (isToday === 1) {
+
+                        returnValue = "Your next class is tomorrow at " + nextClassTime
+
+                    } else if (distanceInDays < 7) {
+
+                        let day = nextClassDate.getDay()
 
 
-                }
+                        const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+
+                        returnValue = "Your next class is " + weekday[day] + " at " + nextClassTime
+
+                    } else {
+
+                        const nextClassDateString = nextClassDate.toLocaleDateString()
+                        const nextClassDateStringSplit = nextClassDateString.split("/")
+                        const nextClassDateStringShortened = nextClassDateStringSplit[0] + "/" + nextClassDateStringSplit[1]
+
+                        returnValue = "Your next class is " + nextClassDateStringShortened + " at " + nextClassTime
+
+
+                    }
 
                 }
 
@@ -212,12 +215,12 @@ function Header(props) {
                                         },
                                         {
                                             title: decideCreditInfo(),
-                                            icon: "dollar",
+                                            icon: Dollar,
                                             link: "/products"
                                         },
                                         {
                                             title: nextClassString,
-                                            icon: "calendar-today"
+                                            icon: CalendarToday
                                         }
                                     ]}
                                 />
@@ -227,17 +230,17 @@ function Header(props) {
                                     items={[
                                         {
                                             title: "Return to Homepage",
-                                            icon: "home",
+                                            icon: Home,
                                             link: "/"
                                         },
                                         {
                                             title: "Book a Class",
-                                            icon: "calendar-today",
+                                            icon: CalendarToday,
                                             link: "/book"
                                         },
                                         {
                                             title: "Purchase Bundles",
-                                            icon: "shopping-cart",
+                                            icon: ShoppingCart,
                                             link: "/products"
                                         }
                                     ]}
@@ -278,7 +281,7 @@ function Header(props) {
 
                         <Link to={item.link} className="flex items-center space-x-4" key={key} onClick={dismissMenu} >
                             <Icon
-                                name={item.icon}
+                                image={item.icon}
                                 isLink={true} />
                             <p>{item.title}</p>
                         </Link>
@@ -287,7 +290,7 @@ function Header(props) {
                         :
 
                         <div className="flex items-center space-x-4" key={key}>
-                            <Icon name={item.icon} />
+                            <Icon image={item.icon} />
                             <p>{item.title}</p>
                         </div>
 
@@ -296,6 +299,27 @@ function Header(props) {
 
         )
     }
+
+    function Icon(props) {
+
+
+        if (props.image === "user") {
+            return (
+
+                <div className="w-9 h-9 bg-gray-200 flex rounded-full">
+                    <img src={props.image} alt="" className="w-6 h-6 mx-auto my-auto" />
+                </div>
+            )
+        } else {
+
+            <div className="w-9 h-9 bg-gray-200 flex rounded-full">
+                <img src="https://css.gg/user.svg" alt="" className="w-6 h-6 mx-auto my-auto" />
+            </div>
+
+        }
+
+    }
+
 }
 
 export default Header
