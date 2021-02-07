@@ -80,7 +80,7 @@ export default function CheckoutForm(props) {
       }
     });
     if (payload.error) {
-      setError(`Payment failed ${payload.error.message}`);
+      setError(`Payment failed: ${payload.error.message}. Please contact support@eastkickboxingclub.com for assistance.`);
       setProcessing(false);
 
       history.pushState("/error")

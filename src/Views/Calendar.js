@@ -48,7 +48,7 @@ function Calendar(props) {
                 const attendeeCount = element.data().attendees.length
                 const currentDay = new Date().getDate()
 
-                if (month === currentMonth && attendeeCount <= 8 && day >= currentDay) {
+                if (month === currentMonth && attendeeCount < 8 && day >= currentDay) {
 console.log(id, "ran")
                     availableDaysDict[day] = id
 

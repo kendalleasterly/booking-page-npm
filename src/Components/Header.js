@@ -44,13 +44,13 @@ function Header(props) {
     const decideCreditInfo = function () {
 
         if (props.account.isMember) {
-            return "You have an unlimited amount of free classes"
+            return "You have an unlimited amount of classes"
         } else if (freeClasses === 1) {
-            return "You have one free class remianing"
+            return "You have one class remianing"
         } else if (freeClasses === 0) {
-            return "You have no free classes"
+            return "You have no classes"
         } else {
-            return `You have ${freeClasses} free classes remaining`
+            return `You have ${freeClasses} classes remaining`
         }
 
     }
