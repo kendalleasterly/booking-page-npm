@@ -60,7 +60,7 @@ function App() {
       }).catch((err) => {
 
         history.push("/error")
-        console.log("error in get redirect was", err)
+        console.log("We're sorry, but there was an error signing you in. Please contact support@eastkickboxingclub.com:", err.message)
         
       })
   }, [user])

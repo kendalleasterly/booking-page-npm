@@ -179,7 +179,7 @@ function Header(props) {
                     <img src="https://css.gg/user.svg" alt="" />
                 </div> */}
 
-                <Icon name="user" />
+                <Icon image="user" />
 
             </button>
 
@@ -220,7 +220,7 @@ function Header(props) {
                                         },
                                         {
                                             title: nextClassString,
-                                            icon: CalendarToday
+                                            icon: "calendar-today"
                                         }
                                     ]}
                                 />
@@ -307,14 +307,27 @@ function Header(props) {
             return (
 
                 <div className="w-9 h-9 bg-gray-200 flex rounded-full">
-                    <img src={props.image} alt="" className="w-6 h-6 mx-auto my-auto" />
+                    <img src="https://css.gg/user.svg" alt="" className="w-6 h-6 mx-auto my-auto" />
                 </div>
             )
+
+        } else if (props.image === "calendar-today") {
+            return (
+                <div className="w-9 h-9 bg-gray-200 flex rounded-full">
+                    <img src="https://css.gg/calendar-today.svg" alt="" className="w-6 h-6 mx-auto my-auto" />
+                </div>
+            )
+
         } else {
 
-            <div className="w-9 h-9 bg-gray-200 flex rounded-full">
-                <img src="https://css.gg/user.svg" alt="" className="w-6 h-6 mx-auto my-auto" />
-            </div>
+            return (
+
+                <div className="w-9 h-9 bg-gray-200 flex rounded-full">
+                    <img src={props.image} alt="" className="w-6 h-6 mx-auto my-auto" />
+                </div>
+
+
+            )
 
         }
 

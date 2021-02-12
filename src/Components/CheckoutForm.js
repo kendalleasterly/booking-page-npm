@@ -10,6 +10,8 @@ import {useCreateEvent } from "../Hooks/FirebaseAdd"
 import {usePaymentFunctions } from "../Hooks/PaymentModes"
 import BackButton from "./BackButton";
 import {useHistory} from "react-router-dom"
+import dotenv from "dotenv"
+dotenv.config()
 
 export default function CheckoutForm(props) {
 
@@ -27,12 +29,13 @@ export default function CheckoutForm(props) {
   const editDatabase = useCreateEvent(props.firestore, props.auth, account, props.selectedTime)
   const [decidePreviousStep, getProductId] = usePaymentFunctions(props.selectedTime, account)
 
-  
+  const serverURL = "https://east-kickboxing-booking.herokuapp.com/create-payment-intent"
+  // const serverURL = "http://localhost:4000/create-payment-intent"
 
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
     window
-      .fetch("https://east-kickboxing-booking.herokuapp.com/create-payment-intent", {
+      .fetch(serverURL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -80,10 +83,9 @@ export default function CheckoutForm(props) {
       }
     });
     if (payload.error) {
-      setError(`Payment failed: ${payload.error.message}. Please contact support@eastkickboxingclub.com for assistance.`);
+      setError(`Payment failed: ${payload.error.message} Please contact support@eastkickboxingclub.com for assistance.`);
       setProcessing(false);
 
-      history.pushState("/error")
     } else {
       setError(null);
       setProcessing(false);

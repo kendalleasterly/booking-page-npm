@@ -12,9 +12,7 @@ function NotFound() {
     }, [history])
 
     return (
-        <div>
-            <p className = "text-center font-semibold text-xl">404 error</p>
-        </div>
+        <p></p>
     )
 }
 
