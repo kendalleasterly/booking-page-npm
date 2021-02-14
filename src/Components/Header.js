@@ -7,10 +7,15 @@ import Home from "../Images/home.svg"
 import ShoppingCart from "../Images/shopping-cart.svg"
 import CalendarToday from "../Images/calendar-today.svg"
 
+import {authAtom, firestoreAtom} from "../atoms"
+import { useRecoilValue } from 'recoil'
+
 function Header(props) {
 
-    const firestore = props.firestore
-    const auth = props.auth
+    const firestore =  useRecoilValue(firestoreAtom) 
+    // props.firestore 
+    const auth = useRecoilValue(authAtom) 
+    // props.auth
     const [name, setName] = useState("")
     const [freeClasses, setFreeClasses] = useState(0)
     const [showingMenu, setShowingMenu] = useState(false)
