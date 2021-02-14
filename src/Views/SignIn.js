@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
-
+import {auth} from "../Services/firebase"
 function SignIn(props) {
 
 
     useEffect(() => {
         
-        props.auth.getRedirectResult()
+        auth.getRedirectResult()
         .then((result) => {
           if (result.credential) {
             /** @type {firebase.auth.OAuthCredential} */

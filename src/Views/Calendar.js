@@ -1,8 +1,8 @@
+import React, { useState, useEffect } from 'react'
 import "firebase/auth"
 import "firebase/firestore"
 
-import React, { useState, useEffect } from 'react'
-
+import {auth, firestore} from "../Services/firebase"
 import { useCollectionOnce } from "react-firebase-hooks/firestore"
 import { Link } from "react-router-dom"
 
@@ -18,7 +18,6 @@ const getCurrentMonth = function () {
 
 function Calendar(props) {
 
-    const firestore = props.firestore
     const setSelectedTime = props.setSelectedTime
 
     const classesRef = firestore.collection("classes")

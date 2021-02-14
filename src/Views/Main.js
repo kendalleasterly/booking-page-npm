@@ -7,15 +7,17 @@ import Header from "../Components/Header"
 import NotFound from "./NotFound"
 import Home from "./Home"
 
+import {auth, firestore} from "../Services/firebase"
+
 function Main(props) {
 
-    const accountRef = props.firestore.collection("users").doc(props.auth.currentUser.uid)
+    const accountRef = firestore.collection("users").doc(auth.currentUser.uid)
     const [account] = useDocumentData(accountRef)
 
     const header = <Header
-        firestore={props.firestore}
+        firestore={firestore}
         account={account}
-        auth={props.auth} />
+        auth={auth} />
 
 
     // const getErrorInfo = function () {

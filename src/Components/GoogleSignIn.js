@@ -2,13 +2,18 @@ import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import GoogleImage from "../Images/google.svg"
 
+import {fb, auth} from "../Services/firebase"
+
 function GoogleSignIn(props) {
 
     const signInWithGoogle = () => {
         
-        const provider = new props.firebase.auth.GoogleAuthProvider()
 
-        props.auth.signInWithRedirect(provider)
+        console.log("auth is", auth)
+        const provider =  new fb.auth.GoogleAuthProvider()
+        
+
+        auth.signInWithRedirect(provider)
         
     }
     const history = useHistory()

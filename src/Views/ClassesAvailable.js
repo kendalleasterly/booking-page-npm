@@ -8,7 +8,7 @@ function ClassesAvailable(props) {
     const account = props.account
     const history = useHistory()
     const selectedTime = props.selectedTime
-    const createEvent = useCreateEvent(props.firestore, props.auth, account, selectedTime)
+    const createEvent = useCreateEvent(account, selectedTime)
 
     const decideText = function () {
         if (account) {

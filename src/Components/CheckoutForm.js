@@ -4,13 +4,12 @@ import {
   useStripe,
   useElements
 } from "@stripe/react-stripe-js";
-import "firebase/auth"
-import "firebase/firestore"
 import {useCreateEvent } from "../Hooks/FirebaseAdd"
 import {usePaymentFunctions } from "../Hooks/PaymentModes"
 import BackButton from "./BackButton";
 import {useHistory} from "react-router-dom"
 import dotenv from "dotenv"
+
 dotenv.config()
 
 export default function CheckoutForm(props) {
@@ -26,7 +25,7 @@ export default function CheckoutForm(props) {
 
   const stripe = useStripe();
   const elements = useElements();
-  const editDatabase = useCreateEvent(props.firestore, props.auth, account, props.selectedTime)
+  const editDatabase = useCreateEvent(account, props.selectedTime)
   const [decidePreviousStep, getProductId] = usePaymentFunctions(props.selectedTime, account)
 
   const serverURL = "https://east-kickboxing-booking.herokuapp.com/create-payment-intent"

@@ -1,14 +1,13 @@
-
 import Calendar from "./Calendar"
 import ClassesAvailable from "./ClassesAvailable"
 import Payment from "./Payment"
 import { Route, Switch } from "react-router-dom"
 import {useState} from "react"
 
+import {auth, firestore} from "../Services/firebase"
+
 function Book(props) {
 
-    const firestore = props.firestore
-    const auth = props.auth
     const [selectedTime, setSelectedTime] = useState("")
     const account = props.account
     return (

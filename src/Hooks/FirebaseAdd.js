@@ -1,7 +1,8 @@
 import firebase from "firebase/app"
+import {auth, firestore} from "../Services/firebase"
 import { useHistory, useParams } from "react-router-dom"
 
-export function useCreateEvent(firestore, auth, account, selectedTime) {
+export function useCreateEvent(account, selectedTime) {
 
     const history = useHistory()
     const { id } = useParams()

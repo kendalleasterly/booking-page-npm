@@ -1,32 +1,14 @@
-import GoogleSignIn from "./Components/GoogleSignIn"
-import Main from "./Views/Main"
-import firebase from "firebase/app"
-import "firebase/auth"
-import "firebase/firestore"
 import "tailwindcss/tailwind.css"
 import React, { useEffect } from "react"
 import { BrowserRouter as Router, useHistory } from "react-router-dom"
-
 import { useAuthState } from "react-firebase-hooks/auth"
 import { Helmet, HelmetProvider } from "react-helmet-async"
 
+import {auth, firestore} from "./Services/firebase"
 
-if (!firebase.apps.length) {
-  firebase.initializeApp({
-    apiKey: "AIzaSyCKoM5avYL1KHa5Z19W-OqIGZ6N1mN7_IA",
-    authDomain: "east-kickboxing-booking.firebaseapp.com",
-    projectId: "east-kickboxing-booking",
-    storageBucket: "east-kickboxing-booking.appspot.com",
-    messagingSenderId: "378920786387",
-    appId: "1:378920786387:web:ff23f67d0096fa4de97726",
-    measurementId: "G-RQWW28MLYR"
-  })
-}
+import GoogleSignIn from "./Components/GoogleSignIn"
+import Main from "./Views/Main"
 
-
-
-const auth = firebase.auth()
-const firestore = firebase.firestore()
 
 function App() {
 
@@ -77,7 +59,7 @@ function App() {
           <style>{'body { background-color: #FAFAFA;; }'}</style>
         </Helmet>
 
-        {user ? <Main firestore={firestore} auth={auth} /> : <GoogleSignIn auth={auth} firebase={firebase} />}
+        {user ? <Main /> : <GoogleSignIn />}
 
       </Router>
     </HelmetProvider>
