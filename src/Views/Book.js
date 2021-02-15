@@ -4,7 +4,7 @@ import Payment from "./Payment"
 import { Route, Switch } from "react-router-dom"
 import {useState} from "react"
 
-import {auth, firestore} from "../Services/firebase"
+import {auth, firestore} from "../Global/firebase"
 
 function Book(props) {
 

@@ -4,10 +4,11 @@ import { BrowserRouter as Router, useHistory } from "react-router-dom"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { Helmet, HelmetProvider } from "react-helmet-async"
 
-import {auth, firestore} from "./Services/firebase"
+import {auth, firestore} from "./Global/firebase"
 
-import GoogleSignIn from "./Components/GoogleSignIn"
+import GoogleSignIn from "./Views/ChooseSignIn"
 import Main from "./Views/Main"
+import ChooseSignIn from "./Views/ChooseSignIn"
 import EmailContainer from "./Views/EmailContainer"
 
 
@@ -60,8 +61,8 @@ function App() {
           <style>{'body { background-color: #FAFAFA;; }'}</style>
         </Helmet>
 
-        {/* {user ? <Main /> : <GoogleSignIn />} */}
-        {user ? <Main /> : <EmailContainer />}
+        {user ? <Main /> : <ChooseSignIn />}
+        {/* {user ? <Main /> : < EmailContainer/>} */}
 
       </Router>
     </HelmetProvider>
