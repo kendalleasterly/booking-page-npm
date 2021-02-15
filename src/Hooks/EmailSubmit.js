@@ -1,4 +1,4 @@
-import { firestore, auth } from "../Services/firebase"
+import { firestore, auth } from "../Global/firebase"
 export default function useSubmitCredentials(email, password, errorHandler, name) {
 
     function signUp() {

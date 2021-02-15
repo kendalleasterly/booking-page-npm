@@ -7,7 +7,7 @@ import Home from "../Images/home.svg"
 import ShoppingCart from "../Images/shopping-cart.svg"
 import CalendarToday from "../Images/calendar-today.svg"
 
-import {auth, firestore} from "../Services/firebase"
+import {auth, firestore} from "../Global/firebase"
 
 function Header(props) {
 

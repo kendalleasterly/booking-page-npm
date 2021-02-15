@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import "firebase/auth"
 import "firebase/firestore"
 
-import {auth, firestore} from "../Services/firebase"
+import {auth, firestore} from "../Global/firebase"
 import { useCollectionOnce } from "react-firebase-hooks/firestore"
 import { Link } from "react-router-dom"
 

@@ -7,7 +7,7 @@ import Header from "../Components/Header"
 import NotFound from "./NotFound"
 import Home from "./Home"
 
-import {auth, firestore} from "../Services/firebase"
+import {auth, firestore} from "../Global/firebase"
 
 function Main(props) {
 

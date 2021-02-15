@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import { useRecoilState } from 'recoil'
 import useSubmitCredentials from "../Hooks/EmailSubmit"
 import Back from "../Images/back.svg"
+import {chooseSignInStepAtom} from "../Global/atoms"
 
 function EmailSignUp(props) {
 
+    const [choiceStep, setChoiceStep] = useRecoilState(chooseSignInStepAtom)
     const [step, setStep] = useRecoilState(props.stepAtom)
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
@@ -33,6 +35,7 @@ function EmailSignUp(props) {
         <div>
             <div className="space-y-10 mx-auto card">
                 <div>
+                <button onClick = {() => setChoiceStep(0)}><img src={Back} alt=""/></button>
                     <p className="text-xl text-gray-900 font-bold text-center">Sign Up</p>
                 </div>
 

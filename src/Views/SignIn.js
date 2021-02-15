@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import {auth} from "../Services/firebase"
+import {auth} from "../Global/firebase"
 function SignIn(props) {
 
 
