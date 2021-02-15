@@ -8,6 +8,7 @@ import {auth, firestore} from "./Services/firebase"
 
 import GoogleSignIn from "./Components/GoogleSignIn"
 import Main from "./Views/Main"
+import EmailContainer from "./Views/EmailContainer"
 
 
 function App() {
@@ -59,7 +60,8 @@ function App() {
           <style>{'body { background-color: #FAFAFA;; }'}</style>
         </Helmet>
 
-        {user ? <Main /> : <GoogleSignIn />}
+        {/* {user ? <Main /> : <GoogleSignIn />} */}
+        {user ? <Main /> : <EmailContainer />}
 
       </Router>
     </HelmetProvider>
