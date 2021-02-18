@@ -28,7 +28,7 @@ export default function CheckoutForm(props) {
   const editDatabase = useCreateEvent(account, props.selectedTime)
   const [decidePreviousStep, getProductId] = usePaymentFunctions(props.selectedTime, account)
 
-  const serverURL = "https://east-kickboxing-booking.herokuapp.com/create-payment-intent"
+  const serverURL = "https://east-kickboxing-club.herokuapp.com/create-payment-intent"
   // const serverURL = "http://localhost:4000/create-payment-intent"
 
   useEffect(() => {
