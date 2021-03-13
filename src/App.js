@@ -1,21 +1,34 @@
 import "tailwindcss/tailwind.css"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { BrowserRouter as Router, useHistory } from "react-router-dom"
-import { useAuthState } from "react-firebase-hooks/auth"
+
 import { Helmet, HelmetProvider } from "react-helmet-async"
 
 import {auth, firestore} from "./Global/firebase"
 
-import GoogleSignIn from "./Views/ChooseSignIn"
 import Main from "./Views/Main"
 import ChooseSignIn from "./Views/ChooseSignIn"
-import EmailContainer from "./Views/EmailContainer"
 
 
 function App() {
 
-  const [user] = useAuthState(auth)
   const history = useHistory()
+  const [isSignedIn, setIsSignedIn] = useState(false);
+
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+
+      console.log("the current user is", user)
+
+      if (user) {
+        console.log("returned true");
+        setIsSignedIn(true)
+      } else {
+        console.log("returned false");
+        setIsSignedIn(false)
+      }
+    });
+  }, []);
 
   useEffect(() => {
 
@@ -36,7 +49,8 @@ function App() {
                   name: user.displayName,
                   email: user.email,
                   freeClasses: 0,
-                  isMember: false
+                  isMember: false,
+                  daysLeft: -1
                 })
               }
             })
@@ -47,7 +61,7 @@ function App() {
         console.log("We're sorry, but there was an error signing you in. Please contact support@eastkickboxingclub.com:", err.message)
         
       })
-  }, [user])
+  }, [])
 
   //you have two different routes that you can control. what needs to happen is that when you sign in, app.js needs to get that 
   //and upload the user's new information.
@@ -61,7 +75,7 @@ function App() {
           <style>{'body { background-color: #FAFAFA;; }'}</style>
         </Helmet>
 
-        {user ? <Main /> : <ChooseSignIn />}
+        {isSignedIn ? <Main /> : <ChooseSignIn />}
         {/* {user ? <Main /> : < EmailContainer/>} */}
 
       </Router>
