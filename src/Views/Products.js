@@ -28,7 +28,7 @@ function Products(props) {
         {
             title: "Membership",
             price: 18000,
-            description: "Unlimited classes + one personal training session!",
+            description: "Unlimited classes for a month + one personal training session!",
             id: "membership"
         }
     ]

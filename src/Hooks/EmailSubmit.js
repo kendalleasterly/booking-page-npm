@@ -16,7 +16,8 @@ export default function useSubmitCredentials(email, password, errorHandler, name
                                 name: name,
                                 email: email,
                                 freeClasses: 0,
-                                isMember: false
+                                isMember: false,
+                                daysLeft: -1
                             })
                         }
                     })

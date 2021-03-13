@@ -76,7 +76,8 @@ export function useCreateEvent(account, selectedTime) {
 
                 if (id === "membership") {
                     accountRef.update({
-                        isMember: true
+                        isMember: true,
+                        daysLeft:29
                     })
                 }
 
