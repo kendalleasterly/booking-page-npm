@@ -36,7 +36,7 @@ function Calendar(props) {
             // make array of days you get
             // then check if the length of attendees is 8, don't include the number
 
-            let availableDaysDict = {}
+            let availableDaysDict = {} 
 
             classes.docs.forEach(element => {
                 const id = element.id
