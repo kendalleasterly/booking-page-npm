@@ -1,5 +1,5 @@
 import firebase from "firebase/app"
-import {auth, firestore} from "../Global/firebase"
+import {auth, fb, firestore} from "../Global/firebase"
 import { useHistory, useParams } from "react-router-dom"
 
 export function useCreateEvent(account, selectedTime) {
@@ -13,11 +13,11 @@ export function useCreateEvent(account, selectedTime) {
 
             const bookingsRef = firestore.collection("bookings")
             const accountRef = firestore.collection("users").doc(auth.currentUser.uid)
-            const classRef = firestore.collection("classes").doc(selectedTime)
+            const classRef = firestore.collection("classes").where("date", "==", fb.firestore.Timestamp.fromDate(selectedTime))
 
             if (firestore && auth && account && selectedTime && account.freeClasses >= 0) {
                 bookingsRef.add({
-                    time: selectedTime,
+                    time: fb.firestore.Timestamp.fromDate(selectedTime),
                     userID: auth.currentUser.uid
                 })
 

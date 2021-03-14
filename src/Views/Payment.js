@@ -3,34 +3,28 @@ import React, { useEffect } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../Components/CheckoutForm"
+
+import { bookingSelectedDayAtom } from "../Global/atoms"
+import { useRecoilState, useRecoilValue } from "recoil"
+
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
 // loadStripe is initialized with your real test publishable API key.
+
+//STRIPE KEY
 const promise = loadStripe("pk_live_51I2xqcGzyM7sApL2oRsoS9Oh1HR81hv8vMWeNhhynJMgE117xdWktiQ8RI7uMmryGkWZpkCNHkgfB1BQcRpeMYoM0077N1Unkl");
 
 export default function Payment(props) {
 
   const history = useHistory()
-  const selectedTime = props.selectedTime
+  const selectedTime = useRecoilValue(bookingSelectedDayAtom)
   const { id } = useParams()
   useEffect(() => {
-console.log(selectedTime)
-    if (selectedTime) {
-      //booking mode
-      if (selectedTime === "") {
-        history.push("/book")
-      }
-    } else {
 
-      if (
-        id !== "threepack" &&
-        id !== "fourpack" &&
-        id !== "tenpack" &&
-        id !== "membership"
-      ) {
-        history.push("/")
-      }
+    if (selectedTime === "") {
+      history.push("/book")
     }
+
   }, [history])
 
   return (
