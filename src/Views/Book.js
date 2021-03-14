@@ -8,7 +8,7 @@ import {auth, firestore} from "../Global/firebase"
 
 function Book(props) {
 
-    const [selectedTime, setSelectedTime] = useState("")
+    // const [selectedTime, setSelectedTime] = useState("")
     const account = props.account
     return (
         <div>
@@ -17,15 +17,11 @@ function Book(props) {
                     <Calendar
                         firestore={firestore}
                         auth={auth}
-                        selectedTime = {selectedTime}
-                        setSelectedTime = {setSelectedTime}
                         account={account} />
                 </Route>
 
                 <Route path="/book/usefreeclasses">
                     <ClassesAvailable
-                        selectedTime = {selectedTime}
-                        setSelectedTime = {setSelectedTime}
                         firestore={firestore}
                         auth={auth}
                         account={account} />
@@ -33,8 +29,6 @@ function Book(props) {
 
                 <Route path="/book/payment">
                     <Payment
-                        selectedTime = {selectedTime}
-                        setSelectedTime = {setSelectedTime}
                         firestore={firestore}
                         auth={auth}
                         account={account} />

@@ -18,13 +18,10 @@ function App() {
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
 
-      console.log("the current user is", user)
 
       if (user) {
-        console.log("returned true");
         setIsSignedIn(true)
       } else {
-        console.log("returned false");
         setIsSignedIn(false)
       }
     });

@@ -3,12 +3,16 @@ import {useHistory, Link} from "react-router-dom"
 import BackButton from "../Components/BackButton"
 import {useEffect} from "react"
 
+import {bookingSelectedDayAtom} from "../Global/atoms"
+import {useRecoilValue} from "recoil"
+
 function ClassesAvailable(props) {
     
     const account = props.account
     const history = useHistory()
-    const selectedTime = props.selectedTime
-    const createEvent = useCreateEvent(account, selectedTime)
+    const selectedDay = useRecoilValue(bookingSelectedDayAtom)
+    const createEvent = useCreateEvent(account, selectedDay)
+
 
     const decideText = function () {
         if (account) {
@@ -34,11 +38,13 @@ og page */
 
 useEffect(() => {
    
-    if(selectedTime === "") {
-        history.push("/")
+    if(selectedDay === "") {
+        console.log("pushed cause selected day was", selectedDay)
+        history.push("/book")
+
     }
 
-}, [selectedTime])
+}, [selectedDay])
 
     return (
 

@@ -15,8 +15,6 @@ function ChooseSignIn(props) {
 
     const signInWithGoogle = () => {
 
-
-        console.log("auth is", auth)
         const provider = new fb.auth.GoogleAuthProvider()
 
         auth.signInWithRedirect(provider)
