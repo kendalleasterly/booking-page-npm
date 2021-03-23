@@ -13,7 +13,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 
 //STRIPE KEY
 const promise = loadStripe(
-  "pk_test_51I2xqcGzyM7sApL2CXUYBTFTgFzGZm5d05J2B0AxN0RGk6i0CyXkFGxnlJXMo2dOOI3ejHZyp3YEzMWOSDr01zDQ00Y27tApui"
+  "pk_live_51I2xqcGzyM7sApL2oRsoS9Oh1HR81hv8vMWeNhhynJMgE117xdWktiQ8RI7uMmryGkWZpkCNHkgfB1BQcRpeMYoM0077N1Unkl"
 );
 
 export default function Payment(props) {

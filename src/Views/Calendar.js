@@ -65,10 +65,11 @@ function Calendar(props) {
 
 				if (data.attendees.length < 8) {
 					availableClassesDict[date.getDate()] = date
+					console.log(data.date, "was added because it had too many people")
 				}
 			})
 
-            console.log("firebase ran")
+            console.log("available classes are", availableClassesDict)
 
 			setAvailableDays(availableClassesDict)
 		})
