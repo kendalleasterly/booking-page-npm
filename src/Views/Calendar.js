@@ -54,7 +54,7 @@ function Calendar(props) {
 	//             // then check if the length of attendees is 8, don't include the number
 
 	firestore
-		.collection("test-classes")
+		.collection("classes")
 		.get()
 		.then((snapshot) => {
 			let availableClassesDict = {}

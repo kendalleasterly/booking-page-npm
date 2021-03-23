@@ -217,11 +217,11 @@ function Header(props) {
                                             title: decideCreditInfo(),
                                             icon: Dollar,
                                             link: "/products"
-                                        },
-                                        {
-                                            title: nextClassString,
-                                            icon: "calendar-today"
-                                        }
+                                        }//,
+                                        // {
+                                        //     title: nextClassString,
+                                        //     icon: "calendar-today"
+                                        // }
                                     ]}
                                 />
 

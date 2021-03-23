@@ -16,13 +16,15 @@ function ClassesAvailable(props) {
 
     const decideText = function () {
         if (account) {
-            if (account.freeClasses === 1) {
-                return ["You have 1 free class left.", "Would you like to use it?"]
-            } else if (account.isMember) {
+
+            if (account.isMember) {
                 return [`You have an unlimted amount of free classes.`, "Would you like to use one?"]
+            } else if (account.freeClasses === 1) {
+                return ["You have 1 free class left.", "Would you like to use it?"]
             } else {
                 return [`You have ${account.freeClasses} free classes left.`, "Would you like to use one?"]
             }
+            
         } else {
             console.log("there was no account")
             return ["Loading...", ""]

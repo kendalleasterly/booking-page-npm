@@ -15,6 +15,8 @@ export function useCreateEvent(account, selectedTime) {
             const accountRef = firestore.collection("users").doc(auth.currentUser.uid)
             const classRef = firestore.collection("classes").where("date", "==", fb.firestore.Timestamp.fromDate(selectedTime))
 
+            console.log("the classref is", classRef, "since the date is", selectedTime)
+
             if (firestore && auth && account && selectedTime && account.freeClasses >= 0) {
                 bookingsRef.add({
                     time: fb.firestore.Timestamp.fromDate(selectedTime),
@@ -27,11 +29,19 @@ export function useCreateEvent(account, selectedTime) {
                     })
                 }
 
-                classRef.update({
-                    attendees: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.uid)
+                classRef.get().then(snapshot => {
+
+                    console.log("the snapshoit we found was", snapshot.docs[0].id)
+
+                    snapshot.docs[0].ref.update({
+                        attendees: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.uid)
+                    })
+                    
+                    history.push("/book/success")
+
                 })
 
-                history.push("/book/success")
+                
 
             } else {
                 console.log("error in get db add")
