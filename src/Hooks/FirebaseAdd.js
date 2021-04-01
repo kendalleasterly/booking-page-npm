@@ -13,7 +13,7 @@ export function useCreateEvent(account, selectedTime) {
 
             const bookingsRef = firestore.collection("bookings")
             const accountRef = firestore.collection("users").doc(auth.currentUser.uid)
-            const classRef = firestore.collection("test-classes").where("date", "==", fb.firestore.Timestamp.fromDate(selectedTime))
+            const classRef = firestore.collection("classes").where("date", "==", fb.firestore.Timestamp.fromDate(selectedTime))
 
             console.log("the classref is", classRef, "since the date is", selectedTime)
 

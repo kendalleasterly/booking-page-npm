@@ -30,7 +30,7 @@ function Calendar(props) {
 
 	useEffect(() => {
 		firestore
-			.collection("test-classes")
+			.collection("classes")
 			.get()
 			.then((snapshot) => {
 				let availableClassesDict = {}
