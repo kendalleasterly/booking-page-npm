@@ -38,15 +38,17 @@ return statement. You create a default variable value which is a regular p, and 
 that checks whther or not we have checked to see if we have available classes. if we have not, we will history.push the 
 og page */
 
-useEffect(() => {
+// useEffect(() => {
    
     if(selectedDay === "") {
         console.log("pushed cause selected day was", selectedDay)
         history.push("/book")
 
+    } else {
+        console.log("we still ran the checker")
     }
 
-}, [selectedDay])
+// }, [selectedDay])
 
     return (
 

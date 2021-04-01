@@ -7,15 +7,15 @@ import {
 import {useCreateEvent } from "../Hooks/FirebaseAdd"
 import {usePaymentFunctions } from "../Hooks/PaymentModes"
 import BackButton from "./BackButton";
-import {useHistory} from "react-router-dom"
-import dotenv from "dotenv"
-
-dotenv.config()
+import {useHistory, useParams} from "react-router-dom"
 
 export default function CheckoutForm(props) {
 
   const account = props.account
   const history = useHistory()
+  const { id, selectedTime } = useParams()
+  let selectedTimeDate = new Date()
+  selectedTimeDate.setTime(selectedTime)
 
   const [succeeded, setSucceeded] = useState(false);
   const [error, setError] = useState(null);
@@ -25,8 +25,11 @@ export default function CheckoutForm(props) {
 
   const stripe = useStripe();
   const elements = useElements();
-  const editDatabase = useCreateEvent(account, props.selectedTime)
-  const [decidePreviousStep, getProductId] = usePaymentFunctions(props.selectedTime, account)
+  const editDatabase = useCreateEvent(account, selectedTimeDate)
+
+console.log("the checkout forms selected time is ", selectedTimeDate)
+
+  const [decidePreviousStep, getProductId] = usePaymentFunctions(selectedTimeDate, account)
 
   const serverURL = "https://east-kickboxing-club.herokuapp.com/create-payment-intent"
   // const serverURL = "http://localhost:4000/create-payment-intent"

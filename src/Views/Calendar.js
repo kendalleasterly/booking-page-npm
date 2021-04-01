@@ -5,33 +5,13 @@ import "firebase/firestore"
 import { auth, firestore } from "../Global/firebase"
 import { bookingSelectedDayAtom } from "../Global/atoms"
 import { useRecoilState, useRecoilValue } from "recoil"
-// import { useCollectionOnce } from "react-firebase-hooks/firestore"
 import { Link } from "react-router-dom"
-
-// const getCurrentMonth = function () {
-// 	let month = new Date().getMonth()
-
-// 	if (month < 10) {
-// 		return "0" + month
-// 	} else {
-// 		return `${month}`
-// 	}
-// }
-
-//the top level object is a date. the program will
 
 function Calendar(props) {
 	const setSelectedTime = props.setSelectedTime
-
-	// const classesRef = firestore.collection("classes")
-	// const [classes] = useCollectionOnce(classesRef)
-	//if you get an error with this after making it dynamic, it's because you need to add the 0 in 01
-	// const currentMonth = getCurrentMonth()
 	const [availableDays, setAvailableDays] = useState({})
 	const [selectedDay, setSelectedDay] = useState(new Date().getDate())
-	const [bookingSelectedDay, setBookingSelectedDay] = useRecoilState(
-		bookingSelectedDayAtom
-	)
+	const [bookingSelectedDay, setBookingSelectedDay] = useRecoilState(bookingSelectedDayAtom)
 	const daysArray = ["S", "M", "T", "W", "T", "F", "S"]
 	const months = [
 		"January",
@@ -49,75 +29,42 @@ function Calendar(props) {
 	]
 
 	useEffect(() => {
-	// read from firebase
-	//             // make array of days you get
-	//             // then check if the length of attendees is 8, don't include the number
+		firestore
+			.collection("test-classes")
+			.get()
+			.then((snapshot) => {
+				let availableClassesDict = {}
 
-	firestore
-		.collection("classes")
-		.get()
-		.then((snapshot) => {
-			let availableClassesDict = {}
+				snapshot.docs.forEach((doc) => {
+					const data = doc.data()
+					const date = data.date.toDate()
 
-			snapshot.docs.forEach((doc) => {
-				const data = doc.data()
-				const date = data.date.toDate()
+					if (data.attendees.length < 8) {
+						const dayData = availableClassesDict[date.getDate()]
 
-				if (data.attendees.length < 8) {
-					availableClassesDict[date.getDate()] = date
-					console.log(data.date, "was added because it had too many people")
-				}
+						if (dayData) {
+							availableClassesDict[date.getDate()].push(date)
+						} else {
+							availableClassesDict[date.getDate()] = [date]
+						}
+					}
+				})
+
+				setAvailableDays(availableClassesDict)
 			})
-
-            console.log("available classes are", availableClassesDict)
-
-			setAvailableDays(availableClassesDict)
-		})
 	}, [])
 
-	useEffect(() => {
-        const selectedDayString = String(selectedDay)
-        const date  = availableDays[selectedDayString]
+	//MARK: This is commented because i am going to put this code into the next button in the infocard.
 
-        if (date) {
+	// useEffect(() => {
+	// 	const selectedDayString = String(selectedDay)
+	// 	const date = availableDays[selectedDayString]
 
-            console.log("the global selelctecd ay is", date)
-            setBookingSelectedDay(date)
-        }
-        
-	}, [selectedDay])
-
-	//     useEffect(() => {
-
-	//         if (classes) {
-
-	//             // read from firebase
-	//             // make array of days you get
-	//             // then check if the length of attendees is 8, don't include the number
-
-	//             let availableDaysDict = {}
-
-	//             classes.docs.forEach(element => {
-	//                 const id = element.id
-	//                 const timeArray = id.split("-")
-	//                 const month = timeArray[1]
-	//                 const day = parseInt(timeArray[2], 10)
-	//                 const time = timeArray[3] + "-" + timeArray[4]
-	//                 const attendeeCount = element.data().attendees.length
-	//                 const currentDay = new Date().getDate()
-
-	//                 if (month === currentMonth && attendeeCount < 8 && day >= currentDay) {
-	// console.log(id, "ran")
-	//                     availableDaysDict[day] = id
-
-	//                 }
-	//             });
-
-	//             setAvailableDays(availableDaysDict)
-
-	//         }
-
-	//     }, [classes])
+	// 	if (date) {
+	// 		console.log("the global selelctecd ay is", date)
+	// 		setBookingSelectedDay(date)
+	// 	}
+	// }, [selectedDay])
 
 	const getDays = function () {
 		const currentYear = new Date().getFullYear()
@@ -174,35 +121,6 @@ function Calendar(props) {
 		let enabled = false
 		const dayOfMonth = props.day.getDate()
 
-		// const decideStyling = function () {
-		// 	let availableDaysKeys = Object.keys(availableDays)
-		// 	let string = props.day + ""
-
-		// 	if (selectedDay === props.day) {
-		// 		if (availableDaysKeys.includes(string)) {
-		// 			setSelectedTime(availableDays[props.day])
-		// 			console.log("we've set the selected time")
-
-		// 			disabled = false
-		// 			return "text-white font-bold w-8 h-8 bg-blue-500 rounded-full text-center"
-		// 		} else {
-		// 			disabled = true
-		// 			return "text-white font-bold w-8 h-8 bg-gray-300 rounded-full text-center"
-		// 			//TODO: add a feature that makes sure if a day has already passed, it is disabled.
-		// 		}
-		// 	} else if (availableDaysKeys.includes(string)) {
-		// 		disabled = false
-		// 		return "font-bold text-blue-500 w-8 h-8 text-center"
-		// 	} else {
-		// 		return "font-bold text-gray-300 w-8 h-8 text-center"
-		// 	}
-		// }
-
-		// const changeSelectedDay = function () {
-		// 	setSelectedDay(props.day)
-		// 	console.log("selected day from change is", availableDays[props.day])
-		// }
-
 		function decideStyling() {
 			const availableDaysKeys = Object.keys(availableDays)
 			const dayOfMonthString = String(dayOfMonth)
@@ -257,69 +175,91 @@ function Calendar(props) {
 				day.
 			</p>
 		)
+
 		let account = props.account
 
 		const formatTime = function (time) {
-			//note: time is in the format of the firebase doucment ID
-
 			const hour = time.getHours()
 			const minute = time.getMinutes()
 
-			if (minute === 0) {
-				return hour
-			} else {
-				return hour + ":" + minute
+			let newTime = hour
+
+			if (minute != 0) {
+				newTime = newTime + ":" + minute
 			}
+
+			if (hour < 12) {
+				newTime = newTime + " AM"
+			} else {
+				newTime = newTime - 12 + " PM"
+			}
+
+			return newTime
 		}
 
 		const decideNextStep = function () {
-			if (account.freeClasses > 0 || account.isMember) {
-				return "/book/usefreeclasses"
+			if (account) {
+				if (account.freeClasses > 0 || account.isMember) {
+					return "/book/usefreeclasses"
+				} else {
+					return "/book/payment"
+				}
 			} else {
-				return "/book/payment"
+				return "/book/"
 			}
 		}
+
+		function setGlobalSelectedDay(date) {
+			console.log("the invocation of this function includes", date)
+
+			setBookingSelectedDay(date)
+		}
+		
 
 		let availableDaysKeys = Object.keys(availableDays)
 		let selectedDayString = selectedDay + ""
 
 		if (availableDaysKeys.includes(selectedDayString)) {
-			let date = availableDays[selectedDayString]
-			const monthSymbol = months[date.getMonth()]
+
+			let times = availableDays[selectedDayString]
+			const monthSymbol = months[times[0].getMonth()]
 
 			element = (
-				<div className="card text-left text-gray-900 space-y-4">
-					<p className="float-right text-lg font-normal text-gray-400">
-						{monthSymbol} {selectedDay}
-					</p>
+				<div className="space-y-8">
+					{times.map((date, key) => {
+						return (
+							<div className="card text-left text-gray-900 space-y-4" key={key}>
+								<p className="float-right text-lg font-normal text-gray-400">
+									{monthSymbol} {selectedDay}
+								</p>
 
-					<div>
-						<p className="text-lg text-gray-400">Time</p>
-						<p>{formatTime(date)} AM</p>
-					</div>
+								<div>
+									<p className="text-lg text-gray-400">Time</p>
+									<p>{formatTime(date)}</p>
+								</div>
 
-					<div>
-						<p className="text-lg text-gray-400">Price</p>
-						<p className="mb-5">$15.00</p>
-					</div>
+								<div>
+									<p className="text-lg text-gray-400">Price</p>
+									<p className="mb-5">$15.00</p>
+								</div>
 
-					<div>
-						<p className="text-lg text-gray-400">Teacher</p>
-						<p className="mb-5">Jason Easterly</p>
-					</div>
+								<div>
+									<p className="text-lg text-gray-400">Teacher</p>
+									<p className="mb-5">Jason Easterly</p>
+								</div>
 
-					<Link to={decideNextStep()}>
-						<p className="font-bold rounded-3xl bg-blue-500 text-center text-white w-full py-1.5">
-							Next
-						</p>
-					</Link>
+								<Link to={`${decideNextStep()}/${date.getTime()}`}>
+									<p className="font-bold rounded-3xl bg-blue-500 text-center text-white w-full py-1.5" onClick={() => setGlobalSelectedDay(date)}>
+										Next
+									</p>
+								</Link>
+							</div>
+						)
+					})}
 				</div>
 			)
 		}
 
-		//first, get the current selected day. If you can find it in the availableDays dictionary,
-		//then format the time value using a function and put the return of it and add it to it's dom element
-		//put the day in it's dom element using the variable
 		return element
 	}
 }

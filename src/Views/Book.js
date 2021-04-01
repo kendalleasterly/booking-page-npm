@@ -27,7 +27,7 @@ function Book(props) {
                         account={account} />
                 </Route>
 
-                <Route path="/book/payment">
+                <Route path="/book/payment/:selectedTime">
                     <Payment
                         firestore={firestore}
                         auth={auth}
