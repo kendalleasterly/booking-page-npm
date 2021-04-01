@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import "firebase/auth"
 import "firebase/firestore"
 
-import { auth, firestore } from "../Global/firebase"
+import { auth, fb, firestore } from "../Global/firebase"
 import { bookingSelectedDayAtom } from "../Global/atoms"
 import { useRecoilState, useRecoilValue } from "recoil"
 import { Link } from "react-router-dom"
@@ -29,8 +29,12 @@ function Calendar(props) {
 	]
 
 	useEffect(() => {
+
+		const now = new Date()
+
 		firestore
 			.collection("classes")
+			.where("date", ">=", fb.firestore.Timestamp.fromDate(new Date(now.getFullYear(), now.getMonth())))
 			.get()
 			.then((snapshot) => {
 				let availableClassesDict = {}
