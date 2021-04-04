@@ -1,16 +1,19 @@
 import {useCreateEvent } from "../Hooks/FirebaseAdd"
 import {useHistory, Link} from "react-router-dom"
 import BackButton from "../Components/BackButton"
-import {useEffect} from "react"
+import {useParams} from "react-router-dom"
 
-import {bookingSelectedDayAtom} from "../Global/atoms"
-import {useRecoilValue} from "recoil"
+// import {bookingSelectedDayAtom} from "../Global/atoms"
+// import {useRecoilValue} from "recoil"
 
 function ClassesAvailable(props) {
     
     const account = props.account
     const history = useHistory()
-    const selectedDay = useRecoilValue(bookingSelectedDayAtom)
+    // const selectedDay = useRecoilValue(bookingSelectedDayAtom)
+    const { id, selectedTime } = useParams()
+    const selectedDay = new Date()
+	selectedDay.setTime(selectedTime)
     const createEvent = useCreateEvent(account, selectedDay)
 
 

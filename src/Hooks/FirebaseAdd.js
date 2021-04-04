@@ -7,6 +7,8 @@ export function useCreateEvent(account, selectedTime) {
     const history = useHistory()
     const { id } = useParams()
 
+    console.log("the time that was given to firebase add was", selectedTime)
+
     if (selectedTime) {
 
         function callback(willUseFreeClasses) {

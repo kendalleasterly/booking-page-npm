@@ -14,8 +14,13 @@ export default function CheckoutForm(props) {
   const account = props.account
   const history = useHistory()
   const { id, selectedTime } = useParams()
-  let selectedTimeDate = new Date()
-  selectedTimeDate.setTime(selectedTime)
+
+  let selectedTimeDate
+
+  if (selectedTime) {
+    selectedTimeDate= new Date()
+    selectedTimeDate.setTime(selectedTime)
+  }
 
   const [succeeded, setSucceeded] = useState(false);
   const [error, setError] = useState(null);

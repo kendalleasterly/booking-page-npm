@@ -183,22 +183,25 @@ function Calendar(props) {
 		let account = props.account
 
 		const formatTime = function (time) {
-			const hour = time.getHours()
+			let hour = time.getHours()
 			const minute = time.getMinutes()
 
-			let newTime = hour
-
-			if (minute != 0) {
-				newTime = newTime + ":" + minute
-			}
-
 			if (hour < 12) {
-				newTime = newTime + " AM"
+				if (minute != 0) {
+					return `${hour}:${minute} AM`
+				} else {
+					return `${hour} AM`
+				}
 			} else {
-				newTime = newTime - 12 + " PM"
+				
+				hour -= 12
+				
+				if (minute != 0) {
+					return `${hour}:${minute} PM`
+				} else {
+					return `${hour} PM`
+				}
 			}
-
-			return newTime
 		}
 
 		const decideNextStep = function () {
