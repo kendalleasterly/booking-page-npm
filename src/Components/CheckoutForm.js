@@ -22,6 +22,20 @@ export default function CheckoutForm(props) {
     selectedTimeDate.setTime(selectedTime)
   }
 
+  const months = [
+		"January",
+		"February",
+		"March",
+		"April",
+		"May",
+		"June",
+		"July",
+		"August",
+		"September",
+		"October",
+		"November",
+		"December",
+	]
   const [succeeded, setSucceeded] = useState(false);
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState('');
@@ -101,8 +115,36 @@ console.log("the checkout forms selected time is ", selectedTimeDate)
 
     }
   };
-  
-//TODO: add a server function that resets the membership people's counts each month
+
+  function getProductInformation() {
+
+    if (selectedTimeDate) {
+      //give the info for the booking 
+
+      const month = months[selectedTimeDate.getMonth()]
+      const day = selectedTimeDate.getDate()
+
+      console.log("our stuff is", day, month)
+
+      return [`Class on ${month} ${day}`, "15"]
+      
+    } else {
+
+      switch (id) {
+
+        case "threepack":
+          return ["Three Pack", "40"]
+        case "fourpack":
+          return ["Four Pack", "50"]
+        case "tenpack":
+          return ["Ten Pack", "130"]
+        case "membership":
+          return ["Membership", "180"]
+        default:
+          return ["Loading...", ""]
+      }
+    }
+  }
 
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
@@ -112,6 +154,21 @@ console.log("the checkout forms selected time is ", selectedTimeDate)
 
 
         <p className="text-xl font-bold text-center">Enter your payment details</p>
+
+        <div className="font-bold text-left text-gray-900 space-y-4">
+
+								<div>
+									<p className="text-lg text-gray-400">Item</p>
+									<p>{getProductInformation()[0]}</p>
+								</div>
+
+                <div>
+									<p className="text-lg text-gray-400">Price</p>
+									<p>${getProductInformation()[1]}</p>
+								</div>
+
+                </div>
+        
 
         <CardElement id="card-element" options={cardStyle} onChange={handleChange} className="py-2.5" />
 
@@ -137,3 +194,6 @@ console.log("the checkout forms selected time is ", selectedTimeDate)
     </form>
   );
 }
+
+
+

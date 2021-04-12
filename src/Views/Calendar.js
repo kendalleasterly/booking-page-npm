@@ -43,15 +43,18 @@ function Calendar(props) {
 					const data = doc.data()
 					const date = data.date.toDate()
 
-					if (data.attendees.length < 8) {
-						const dayData = availableClassesDict[date.getDate()]
-
-						if (dayData) {
-							availableClassesDict[date.getDate()].push(date)
-						} else {
-							availableClassesDict[date.getDate()] = [date]
+					if (date.getTime() > now.getTime()) {
+						if (data.attendees.length < 8) {
+							const dayData = availableClassesDict[date.getDate()]
+	
+							if (dayData) {
+								availableClassesDict[date.getDate()].push(date)
+							} else {
+								availableClassesDict[date.getDate()] = [date]
+							}
 						}
 					}
+					
 				})
 
 				setAvailableDays(availableClassesDict)
