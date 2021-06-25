@@ -46,7 +46,7 @@ export default function CheckoutForm(props) {
   const elements = useElements();
   const editDatabase = useCreateEvent(account, selectedTimeDate)
 
-console.log("the checkout forms selected time is ", selectedTimeDate)
+  console.log("the checkout forms selected time is ", selectedTimeDate)
 
   const [decidePreviousStep, getProductId] = usePaymentFunctions(selectedTimeDate, account)
 
@@ -61,7 +61,7 @@ console.log("the checkout forms selected time is ", selectedTimeDate)
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ items: [{ id: getProductId() }] })
+        body: JSON.stringify({ items: [getProductId()], customerID:  account.stripeCustomerID})
       })
       .then(res => {
         return res.json();

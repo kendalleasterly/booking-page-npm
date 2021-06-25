@@ -8,7 +8,10 @@ import {auth, firestore} from "./Global/firebase"
 
 import Main from "./Views/Main"
 import ChooseSignIn from "./Views/ChooseSignIn"
+import axios from "axios"
 
+// const serverURL = "http://localhost:4000"
+const serverURL = "https://east-kickboxing-club.herokuapp.com"
 
 function App() {
 
@@ -39,16 +42,25 @@ function App() {
           const userRef = firestore.collection("users").doc(uid)
 
           userRef.get()
-            .then((snapshot) => {
+            .then(async (snapshot) => {
               if (!snapshot.exists) {
+                console.log("snapshot didn't exist")
+                const newStripeUser = await axios.post(serverURL + "/create-stripe-customer", {
+                    name: user.displayName,
+                    email: user.email,
+                    uid: user.uid
+                })
 
                 userRef.set({
                   name: user.displayName,
                   email: user.email,
                   freeClasses: 0,
                   isMember: false,
-                  daysLeft: -1
+                  daysLeft: -1,
+                  stripeCustomerID: newStripeUser.data.id
                 })
+              } else {
+                console.log("snapshot didn't exist")
               }
             })
         }

@@ -1,12 +1,23 @@
+import axios from "axios"
 import { firestore, auth } from "../Global/firebase"
+
+// const serverURL = "http://localhost:4000"
+const serverURL = "https://east-kickboxing-club.herokuapp.com"
+
 export default function useSubmitCredentials(email, password, errorHandler, name) {
 
     function signUp() {
 
         auth.createUserWithEmailAndPassword(email, password)
-            .then(userCredential => {
+            .then(async userCredential => {
 
                 const userRef = firestore.collection("users").doc(userCredential.user.uid)
+
+                const newStripeUser = await axios.post(serverURL + "/create-stripe-customer", {
+                    name: name,
+                    email: email,
+                    uid: userCredential.user.uid
+                })
 
                 userRef.get()
                     .then((snapshot) => {
@@ -17,7 +28,8 @@ export default function useSubmitCredentials(email, password, errorHandler, name
                                 email: email,
                                 freeClasses: 0,
                                 isMember: false,
-                                daysLeft: -1
+                                daysLeft: -1,
+                                stripeCustomerID: newStripeUser.data.id
                             })
                         }
                     })
