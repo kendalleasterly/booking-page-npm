@@ -1,7 +1,7 @@
 import Calendar from "./Calendar"
 import ClassesAvailable from "./ClassesAvailable"
 import Payment from "./Payment"
-import { Route, Switch } from "react-router-dom"
+import { Route, Switch, useParams } from "react-router-dom"
 import {useState} from "react"
 
 import {auth, firestore} from "../Global/firebase"
@@ -34,14 +34,31 @@ function Book(props) {
                         account={account} />
                 </Route>
 
-                <Route path="/book/success">
-                <p className="text-center font-semibold text-xl">Your Payment has gone through, and you have successfuly reserved a spot with us at East Kickboxing Club. Thank You!</p>
+                <Route path="/book/success/:bookTime">
+                
+                <BookingSuccess/>
                 </Route>
 
             </Switch>
 
         </div>
     )
+
+    function BookingSuccess(props) {
+        const {bookTime} = useParams()
+
+        let bookDate = new Date()
+        bookDate.setTime(bookTime)
+
+        return (
+            <div>
+                <p className="text-center font-semibold text-xl">Your Payment has gone through, and you have successfuly reserved a spot with us at East Kickboxing Club. Thank You!</p>
+                <p className = "text-center py-4">Your class is for {bookDate.toLocaleDateString()} at {bookDate.toLocaleTimeString()}.</p>
+            </div>
+        )
+
+    }
+
 }
 
 export default Book

@@ -39,7 +39,7 @@ export function useCreateEvent(account, selectedTime) {
                         attendees: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.uid)
                     })
                     
-                    history.push("/book/success")
+                    history.push(`/book/success/${selectedTime.getTime()}`)
 
                 })
 

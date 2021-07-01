@@ -6,6 +6,7 @@ import Dollar from "../Images/dollar.svg"
 import Home from "../Images/home.svg"
 import ShoppingCart from "../Images/shopping-cart.svg"
 import CalendarToday from "../Images/calendar-today.svg"
+import CloseIcon from "../Images/close.svg"
 
 import {auth, firestore} from "../Global/firebase"
 
@@ -249,7 +250,7 @@ function Header(props) {
                             </div>
 
                             <button onClick={dismissMenu}>
-                                <img src="https://css.gg/close.svg" alt="" />
+                                <img src={CloseIcon} alt="" />
                             </button>
 
                         </div>

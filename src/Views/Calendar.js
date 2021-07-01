@@ -6,12 +6,19 @@ import { auth, fb, firestore } from "../Global/firebase"
 import { bookingSelectedDayAtom } from "../Global/atoms"
 import { useRecoilState, useRecoilValue } from "recoil"
 import { Link } from "react-router-dom"
+import { ReactComponent as BackIconVariable } from "../Images/back-variable.svg"
+import { ReactComponent as ForwardIconVariable } from "../Images/forward-variable.svg"
 
 function Calendar(props) {
-	const setSelectedTime = props.setSelectedTime
 	const [availableDays, setAvailableDays] = useState({})
+	const [allClasses, setAllClasses] = useState([])
 	const [selectedDay, setSelectedDay] = useState(new Date().getDate())
-	const [bookingSelectedDay, setBookingSelectedDay] = useRecoilState(bookingSelectedDayAtom)
+	const [month, setMonth] = useState(0)
+	const [bookingSelectedDay, setBookingSelectedDay] = useRecoilState(
+		bookingSelectedDayAtom
+	)
+	const monthIndex = new Date().getMonth() + month
+	const setSelectedTime = props.setSelectedTime
 	const daysArray = ["S", "M", "T", "W", "T", "F", "S"]
 	const months = [
 		"January",
@@ -29,37 +36,52 @@ function Calendar(props) {
 	]
 
 	useEffect(() => {
-
 		const now = new Date()
 
 		firestore
 			.collection("classes")
-			.where("date", ">=", fb.firestore.Timestamp.fromDate(new Date(now.getFullYear(), now.getMonth())))
+			.where("date", ">=", fb.firestore.Timestamp.fromDate(new Date()))
 			.get()
 			.then((snapshot) => {
-				let availableClassesDict = {}
+				let allClassesArray = []
 
 				snapshot.docs.forEach((doc) => {
 					const data = doc.data()
 					const date = data.date.toDate()
 
-					if (date.getTime() > now.getTime()) {
-						if (data.attendees.length < 8) {
-							const dayData = availableClassesDict[date.getDate()]
-	
-							if (dayData) {
-								availableClassesDict[date.getDate()].push(date)
-							} else {
-								availableClassesDict[date.getDate()] = [date]
-							}
-						}
+					if (data.attendees.length < 8) {
+						
+						allClassesArray.push(date)
+						
 					}
-					
 				})
 
-				setAvailableDays(availableClassesDict)
+				setAllClasses(allClassesArray)
 			})
-	}, [])
+	}, []) //don't touch..?
+
+	useEffect(() => {
+		console.log("all days was update", allClasses)
+
+		let availableClassesDict = {}
+
+		allClasses.forEach(date => {
+
+			if (date.getMonth() === monthIndex) {
+
+				const dayData = availableClassesDict[date.getDate()]
+
+				if (dayData) {
+					availableClassesDict[date.getDate()].push(date)
+				} else {
+					availableClassesDict[date.getDate()] = [date]
+				}
+			}
+		})
+
+		setAvailableDays(availableClassesDict)
+
+	}, [month, allClasses])
 
 	//MARK: This is commented because i am going to put this code into the next button in the infocard.
 
@@ -75,22 +97,21 @@ function Calendar(props) {
 
 	const getDays = function () {
 		const currentYear = new Date().getFullYear()
-		const currentMonth = new Date().getMonth()
 
-		let numOfDays = new Date(currentYear, currentMonth + 1, 0).getDate()
+		let numOfDays = new Date(currentYear, monthIndex + 1, 0).getDate()
 
 		let dayArray = []
 
 		let i
 		for (i = 1; i <= numOfDays; i++) {
-			dayArray.push(new Date(currentYear, currentMonth, i))
+			dayArray.push(new Date(currentYear, monthIndex, i))
 		}
 		return dayArray
 	}
 
 	const decideOffset = function () {
 		const now = new Date()
-		let d = new Date(now.getFullYear(), now.getMonth(), 1)
+		let d = new Date(now.getFullYear(), monthIndex, 1)
 		let offset = d.getDay()
 
 		let offsetArray = []
@@ -104,6 +125,19 @@ function Calendar(props) {
 
 	return (
 		<div className="font-bold text-xl space-y-8 ">
+			<div className="flex w-full max-w-sm lg:max-w-md mx-auto">
+				<button onClick={() => setMonth(0)}>
+					<BackIconVariable fill={month === 0 ? "#E4E4E7" : "#3B82F6"} />
+				</button>
+
+				<p className="flex-grow text-center text-blue-500">
+					{months[monthIndex]}
+				</p>
+				<button onClick={() => setMonth(1)}>
+					<ForwardIconVariable fill={month === 0 ? "#3B82F6" : "#E4E4E7"} />
+				</button>
+			</div>
+
 			<div className="card grid gap-7 grid-cols-7 text-center text-blue-500 ">
 				{daysArray.map((element, key) => (
 					<p key={key} className="text-gray-700 text-center">
@@ -196,9 +230,8 @@ function Calendar(props) {
 					return `${hour} AM`
 				}
 			} else {
-				
 				hour -= 12
-				
+
 				if (minute != 0) {
 					return `${hour}:${minute} PM`
 				} else {
@@ -224,13 +257,11 @@ function Calendar(props) {
 
 			setBookingSelectedDay(date)
 		}
-		
 
 		let availableDaysKeys = Object.keys(availableDays)
 		let selectedDayString = selectedDay + ""
 
 		if (availableDaysKeys.includes(selectedDayString)) {
-
 			let times = availableDays[selectedDayString]
 			const monthSymbol = months[times[0].getMonth()]
 
@@ -259,7 +290,10 @@ function Calendar(props) {
 								</div>
 
 								<Link to={`${decideNextStep()}/${date.getTime()}`}>
-									<p className="font-bold rounded-3xl bg-blue-500 text-center text-white w-full py-1.5" onClick={() => setGlobalSelectedDay(date)}>
+									<p
+										className="font-bold rounded-3xl bg-blue-500 text-center text-white w-full py-1.5"
+										onClick={() => setGlobalSelectedDay(date)}
+									>
 										Next
 									</p>
 								</Link>
