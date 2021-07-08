@@ -29,8 +29,14 @@ function SubmitButton(props) {
             })
         }
 
+        const simplifiedUserObject = {
+            id: auth.currentUser.uid,
+            name: account.name,
+            email: account.email
+        }
+
         classRef.update({
-            attendees: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.uid)
+            attendees: firebase.firestore.FieldValue.arrayUnion(simplifiedUserObject)
         })
     }
 
