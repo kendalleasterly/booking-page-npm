@@ -47,11 +47,13 @@ function Calendar(props) {
 
 				snapshot.docs.forEach((doc) => {
 					const data = doc.data()
-					const date = data.date.toDate()
 
 					if (data.attendees.length < 8) {
 						
-						allClassesArray.push(date)
+						allClassesArray.push({
+							date: data.date.toDate(),
+							attendees: data.attendees
+						})
 						
 					}
 				})
@@ -61,20 +63,22 @@ function Calendar(props) {
 	}, []) //don't touch..?
 
 	useEffect(() => {
-		console.log("all days was update", allClasses)
+		console.log("all days was updated", allClasses)
 
 		let availableClassesDict = {}
 
-		allClasses.forEach(date => {
+		allClasses.forEach(session => {
+
+			const date = session.date
 
 			if (date.getMonth() === monthIndex) {
 
 				const dayData = availableClassesDict[date.getDate()]
 
 				if (dayData) {
-					availableClassesDict[date.getDate()].push(date)
+					availableClassesDict[date.getDate()].push(session)
 				} else {
-					availableClassesDict[date.getDate()] = [date]
+					availableClassesDict[date.getDate()] = [session]
 				}
 			}
 		})
@@ -258,16 +262,45 @@ function Calendar(props) {
 			setBookingSelectedDay(date)
 		}
 
+		function getAttendees(session) {
+
+
+			const attendees = session.attendees
+
+			let attendeesString = ""
+
+			if (attendees.length === 0) {
+				attendeesString = "None yet, be the first to sign up!"
+			} else if (attendees.length === 1) {
+				attendeesString = attendees[0].name
+			} else {
+				attendees.forEach(attendee => {
+
+					if (attendees[0].id !== attendee.id) {
+
+						attendeesString = `${attendeesString}, ${attendee.name}`
+
+					} else {
+						attendeesString = attendee.name
+					}
+				})
+			}
+
+			
+
+			return attendeesString
+		}
+
 		let availableDaysKeys = Object.keys(availableDays)
 		let selectedDayString = selectedDay + ""
 
 		if (availableDaysKeys.includes(selectedDayString)) {
-			let times = availableDays[selectedDayString]
-			const monthSymbol = months[times[0].getMonth()]
+			let sessions = availableDays[selectedDayString]
+			const monthSymbol = months[sessions[0].date.getMonth()]
 
 			element = (
 				<div className="space-y-8">
-					{times.map((date, key) => {
+					{sessions.map((session, key) => {
 						return (
 							<div className="card text-left text-gray-900 space-y-4" key={key}>
 								<p className="float-right text-lg font-normal text-gray-400">
@@ -276,7 +309,7 @@ function Calendar(props) {
 
 								<div>
 									<p className="text-lg text-gray-400">Time</p>
-									<p>{formatTime(date)}</p>
+									<p>{formatTime(session.date)}</p>
 								</div>
 
 								<div>
@@ -289,10 +322,15 @@ function Calendar(props) {
 									<p className="mb-5">Jason Easterly</p>
 								</div>
 
-								<Link to={`${decideNextStep()}/${date.getTime()}`}>
+								<div>
+									<p className="text-lg text-gray-400">Attendees</p>
+									<p className="mb-5">{getAttendees(session)}</p>
+								</div>
+
+								<Link to={`${decideNextStep()}/${session.date.getTime()}`}>
 									<p
 										className="font-bold rounded-3xl bg-blue-500 text-center text-white w-full py-1.5"
-										onClick={() => setGlobalSelectedDay(date)}
+										onClick={() => setGlobalSelectedDay(session.date)}
 									>
 										Next
 									</p>

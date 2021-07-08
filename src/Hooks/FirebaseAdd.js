@@ -49,8 +49,6 @@ export function useCreateEvent(account, selectedTime) {
 
                 })
 
-                
-
             } else {
                 console.log("error in get db add")
                 history.push("/error")
