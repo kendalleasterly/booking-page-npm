@@ -35,8 +35,14 @@ export function useCreateEvent(account, selectedTime) {
 
                     console.log("the snapshoit we found was", snapshot.docs[0].id)
 
+                    const simplifiedUserObject = {
+                        id: auth.currentUser.uid,
+                        name: account.name,
+                        email: account.email
+                    }
+
                     snapshot.docs[0].ref.update({
-                        attendees: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.uid)
+                        attendees: firebase.firestore.FieldValue.arrayUnion(simplifiedUserObject)
                     })
                     
                     history.push(`/book/success/${selectedTime.getTime()}`)
