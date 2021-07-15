@@ -1,13 +1,13 @@
 import { useParams } from "react-router-dom"
 
-export function usePaymentFunctions(selectedTime, account) {
-    const { id } = useParams()
-    if (selectedTime) {
+export function usePaymentFunctions(selectedDate, account) {
+    const { id, selectedTime, type } = useParams()
+    if (selectedDate) {
         //decidePreviousStep
         const decidePreviousStep = function () {
             if (account) {
                 if (account.freeClasses > 0 || account.isMember) {
-                    return "/book/usefreeclasses"
+                    return `/book/usefreeclasses/${selectedTime}/${type}`
                 } else {
                     return "/book"
                 }

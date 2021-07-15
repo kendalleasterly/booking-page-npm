@@ -11,7 +11,7 @@ function ClassesAvailable(props) {
     const account = props.account
     const history = useHistory()
     // const selectedDay = useRecoilValue(bookingSelectedDayAtom)
-    const { id, selectedTime } = useParams()
+    const { id, selectedTime, type } = useParams()
     const selectedDay = new Date()
 	selectedDay.setTime(selectedTime)
     const createEvent = useCreateEvent(account, selectedDay)
@@ -65,7 +65,7 @@ og page */
             </div>
 
             <div className="grid grid-cols-2 gap-x-2.5">
-                <Link to = "/book/payment" className="border-black border-2 rounded-3xl p-0.5 text-center">
+                <Link to = {`/book/payment/${selectedTime}/${type}`} className="border-black border-2 rounded-3xl p-0.5 text-center">
                 <p >No</p>
                 </Link>
                 
