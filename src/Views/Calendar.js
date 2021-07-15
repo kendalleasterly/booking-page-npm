@@ -52,7 +52,8 @@ function Calendar(props) {
 						
 						allClassesArray.push({
 							date: data.date.toDate(),
-							attendees: data.attendees
+							attendees: data.attendees,
+							classType: data.classType
 						})
 						
 					}
@@ -63,7 +64,6 @@ function Calendar(props) {
 	}, []) //don't touch..?
 
 	useEffect(() => {
-		console.log("all days was updated", allClasses)
 
 		let availableClassesDict = {}
 
@@ -270,7 +270,7 @@ function Calendar(props) {
 			let attendeesString = ""
 
 			if (attendees.length === 0) {
-				attendeesString = "None yet, be the first to sign up!"
+				attendeesString = "None yet, be the first!"
 			} else if (attendees.length === 1) {
 				attendeesString = attendees[0].name
 			} else {
@@ -289,6 +289,18 @@ function Calendar(props) {
 			
 
 			return attendeesString
+		}
+
+		function getClassType(session) {
+
+			switch (session.classType) {
+				case "adult":
+					return "For adults"
+				case "kid":
+					return "For kids"
+				default:
+					return "For adults"
+			}
 		}
 
 		let availableDaysKeys = Object.keys(availableDays)
@@ -318,8 +330,8 @@ function Calendar(props) {
 								</div>
 
 								<div>
-									<p className="text-lg text-gray-400">Teacher</p>
-									<p className="mb-5">Jason Easterly</p>
+									<p className="text-lg text-gray-400">Type</p>
+									<p className="mb-5">{getClassType(session)}</p>
 								</div>
 
 								<div>
@@ -327,7 +339,7 @@ function Calendar(props) {
 									<p className="mb-5">{getAttendees(session)}</p>
 								</div>
 
-								<Link to={`${decideNextStep()}/${session.date.getTime()}`}>
+								<Link to={`${decideNextStep()}/${session.date.getTime()}/${session.classType}`}>
 									<p
 										className="font-bold rounded-3xl bg-blue-500 text-center text-white w-full py-1.5"
 										onClick={() => setGlobalSelectedDay(session.date)}

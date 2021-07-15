@@ -13,7 +13,9 @@ export default function CheckoutForm(props) {
 
   const account = props.account
   const history = useHistory()
-  const { id, selectedTime } = useParams()
+  const { id, selectedTime, type } = useParams()
+
+  console.log({type})
 
   let selectedTimeDate
 
@@ -146,6 +148,18 @@ export default function CheckoutForm(props) {
     }
   }
 
+  function getClassType() {
+
+    switch (type) {
+      case "adult":
+        return "For adults"
+      case "kid":
+        return "For kids"
+      default:
+        return "For adults"
+    }
+  }
+
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
       <div className="card space-y-5">
@@ -165,6 +179,11 @@ export default function CheckoutForm(props) {
                 <div>
 									<p className="text-lg text-gray-400">Price</p>
 									<p>${getProductInformation()[1]}</p>
+								</div>
+
+                <div>
+									<p className="text-lg text-gray-400">Type</p>
+									<p>{getClassType()}</p>
 								</div>
 
                 </div>

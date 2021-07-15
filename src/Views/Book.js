@@ -20,14 +20,14 @@ function Book(props) {
                         account={account} />
                 </Route>
 
-                <Route path="/book/usefreeclasses/:selectedTime">
+                <Route path="/book/usefreeclasses/:selectedTime/:type">
                     <ClassesAvailable
                         firestore={firestore}
                         auth={auth}
                         account={account} />
                 </Route>
 
-                <Route path="/book/payment/:selectedTime">
+                <Route path="/book/payment/:selectedTime/:type">
                     <Payment
                         firestore={firestore}
                         auth={auth}
