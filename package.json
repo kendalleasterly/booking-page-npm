@@ -52,5 +52,6 @@
     "autoprefixer": "^10.2.6",
     "postcss": "^8.1.0",
     "tailwindcss": "^2.2.4"
-  }
+  },
+  "homepage": "https://eastkickboxingclub.com/app"
 }

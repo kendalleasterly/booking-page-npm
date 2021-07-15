@@ -77,7 +77,7 @@ function App() {
   return (
     <HelmetProvider>
 
-      <Router className="z-50">
+      <Router className="z-50" basename = "/app">
         <link rel="stylesheet" href="https://css.gg/css" />
 
         <Helmet>
